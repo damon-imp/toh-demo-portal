@@ -1,0 +1,2378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TOH Portal | The Optimized Human</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+:root{
+  --bg:#1A1A1A;--bg2:#222222;--bg3:#2a2a2a;--bg4:#333333;
+  --purple:#AC66A7;--purple2:#8a4d87;--purple3:#c789c2;--purple4:#6a3767;
+  --green:#34D399;--green2:#10b981;
+  --amber:#f5b041;--amber2:#d4880c;
+  --red:#ef6b6b;--red2:#c94040;
+  --blue:#66b0f0;--cyan:#3de0f0;
+  --t1:#FFFFFF;--t2:#e8e8e8;--t3:#cfcfcf;--t4:#999999;--t5:#666666;--t6:#4a4a4a;
+  --border:#2f2f2f;--border2:#3a3a3a;--border3:#4a4a4a;
+  --font:'Outfit',sans-serif;--mono:'JetBrains Mono',monospace;
+  --role-js:#AC66A7;--role-fb:#c789c2;--role-br:#66b0f0;--role-mt:#f5b041;--role-ghl:#999999;--role-cl:#34D399;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--bg);color:var(--t2);font-family:var(--font);min-height:100vh;font-size:14.5px;letter-spacing:-0.005em;-webkit-font-smoothing:antialiased}
+body{background-image:radial-gradient(ellipse 1200px 800px at 15% 0%,rgba(172,102,167,0.05) 0%,transparent 55%),radial-gradient(ellipse 900px 700px at 85% 10%,rgba(52,211,153,0.025) 0%,transparent 50%);background-attachment:fixed}
+button,input,select,textarea{font-family:var(--font);letter-spacing:-0.01em}
+::selection{background:var(--purple);color:var(--t1)}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+a{color:inherit;text-decoration:none}
+.brand-gradient{background:linear-gradient(135deg,var(--purple),var(--purple3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* ==== TOP HEADER ==== */
+.app-header{position:sticky;top:0;z-index:50;background:rgba(26,26,26,0.88);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.app-brand{display:flex;align-items:center;gap:12px;cursor:pointer;transition:opacity 0.2s}
+.app-brand:hover{opacity:0.78}
+.app-mark{width:36px;height:36px;border-radius:10px;background:var(--purple);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:var(--t1);letter-spacing:-0.04em}
+.app-brand-txt{display:flex;flex-direction:column;line-height:1}
+.app-brand-top{font-weight:500;font-size:9px;color:var(--t4);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:3px;font-family:var(--mono)}
+.app-brand-bot{font-weight:700;font-size:15px;color:var(--t1);letter-spacing:-0.02em}
+
+/* Demo mode pill */
+.demo-pill{display:flex;align-items:center;gap:7px;padding:5px 11px;border-radius:14px;background:rgba(245,176,65,0.1);border:1px solid rgba(245,176,65,0.3);color:var(--amber);font-size:10.5px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;font-family:var(--mono)}
+.demo-pill .dot{width:6px;height:6px;border-radius:50%;background:var(--amber);animation:pulse 2.4s infinite}
+
+/* Role switcher */
+.role-switcher{display:flex;align-items:center;gap:6px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:3px}
+.role-btn{padding:7px 14px;background:transparent;border:none;color:var(--t4);font-size:12.5px;font-weight:600;cursor:pointer;border-radius:7px;transition:all 0.2s;display:flex;align-items:center;gap:7px;letter-spacing:-0.005em}
+.role-btn:hover{color:var(--t2)}
+.role-btn.active{background:var(--bg3);color:var(--t1)}
+.role-btn .role-init{display:inline-flex;width:20px;height:20px;border-radius:6px;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--t1);font-family:var(--mono);letter-spacing:0}
+.role-btn[data-role="CL"] .role-init{background:var(--green)}
+.role-btn[data-role="JS"] .role-init{background:var(--purple)}
+.role-btn[data-role="FB"] .role-init{background:var(--purple3);color:var(--bg)}
+.role-btn[data-role="BR"] .role-init{background:var(--blue);color:var(--bg)}
+
+.header-right{display:flex;align-items:center;gap:14px}
+.user-pill{display:flex;align-items:center;gap:10px;padding:6px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:10px}
+.user-avatar{width:28px;height:28px;border-radius:8px;background:var(--purple);color:var(--t1);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;font-family:var(--mono)}
+.user-info{display:flex;flex-direction:column;line-height:1.15}
+.user-name{font-size:12.5px;font-weight:600;color:var(--t1)}
+.user-role{font-size:10px;color:var(--t4);font-family:var(--mono);letter-spacing:0.05em;text-transform:uppercase}
+
+/* ==== APP SHELL ==== */
+.app-shell{display:flex;min-height:calc(100vh - 64px)}
+.sidebar{width:220px;background:var(--bg2);border-right:1px solid var(--border);padding:22px 14px;flex-shrink:0}
+.sidebar-section{margin-bottom:18px}
+.sidebar-label{font-size:10px;font-weight:600;color:var(--t5);letter-spacing:0.14em;text-transform:uppercase;padding:0 10px;margin-bottom:8px;font-family:var(--mono)}
+.sidebar-link{display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:8px;color:var(--t4);font-size:13.5px;font-weight:500;cursor:pointer;transition:all 0.2s;margin-bottom:2px;border:none;background:transparent;width:100%;text-align:left;font-family:var(--font)}
+.sidebar-link:hover{background:var(--bg3);color:var(--t2)}
+.sidebar-link.active{background:rgba(172,102,167,0.12);color:var(--purple3);font-weight:600}
+.sidebar-link .ico{font-size:15px;width:18px;display:inline-flex;justify-content:center}
+.sidebar-link .count{margin-left:auto;font-size:10.5px;background:var(--bg4);color:var(--t3);padding:2px 7px;border-radius:10px;font-family:var(--mono);font-weight:600}
+.sidebar-link.active .count{background:var(--purple);color:var(--t1)}
+
+.main-content{flex:1;padding:28px;overflow-x:hidden}
+.page-head{margin-bottom:22px}
+.page-eyebrow{font-size:11px;font-weight:600;color:var(--purple3);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:7px;font-family:var(--mono)}
+.page-title{font-size:26px;font-weight:700;letter-spacing:-0.025em;color:var(--t1);margin-bottom:6px}
+.page-sub{font-size:14px;color:var(--t4);line-height:1.55}
+
+/* ==== SHARED COMPONENTS ==== */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:22px}
+.card-sm{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:14px}
+.card-title{font-size:14px;font-weight:700;color:var(--t1);letter-spacing:-0.01em}
+.card-sub{font-size:12px;color:var(--t4);margin-top:2px}
+
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--border2);background:var(--bg3);color:var(--t2);transition:all 0.2s;letter-spacing:-0.005em}
+.btn:hover{background:var(--bg4);color:var(--t1);border-color:var(--border3)}
+.btn-primary{background:var(--purple);border-color:var(--purple);color:var(--t1)}
+.btn-primary:hover{background:var(--purple2);border-color:var(--purple2)}
+.btn-ghost{background:transparent;border-color:transparent;color:var(--t4)}
+.btn-ghost:hover{background:var(--bg3);color:var(--t1);border-color:transparent}
+.btn-sm{padding:6px 11px;font-size:12px}
+.btn-icon{width:32px;height:32px;padding:0;justify-content:center;border-radius:8px}
+
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:12px;font-size:10.5px;font-weight:600;letter-spacing:0.04em;font-family:var(--mono)}
+.badge-green{background:rgba(52,211,153,0.12);color:var(--green);border:1px solid rgba(52,211,153,0.3)}
+.badge-amber{background:rgba(245,176,65,0.12);color:var(--amber);border:1px solid rgba(245,176,65,0.3)}
+.badge-red{background:rgba(239,107,107,0.12);color:var(--red);border:1px solid rgba(239,107,107,0.3)}
+.badge-purple{background:rgba(172,102,167,0.12);color:var(--purple3);border:1px solid rgba(172,102,167,0.3)}
+.badge-gray{background:var(--bg3);color:var(--t4);border:1px solid var(--border2)}
+.badge-blue{background:rgba(102,176,240,0.12);color:var(--blue);border:1px solid rgba(102,176,240,0.3)}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+
+.tbd-chip{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:5px;font-size:10px;font-weight:600;background:rgba(245,176,65,0.1);color:var(--amber);border:1px dashed rgba(245,176,65,0.4);letter-spacing:0.06em;font-family:var(--mono);text-transform:uppercase}
+
+.pill{display:inline-flex;align-items:center;padding:3px 9px;border-radius:10px;font-size:10.5px;font-weight:600;font-family:var(--mono);letter-spacing:0.04em}
+.pill-role-JS{background:rgba(172,102,167,0.15);color:var(--purple3);border:1px solid rgba(172,102,167,0.3)}
+.pill-role-FB{background:rgba(199,137,194,0.15);color:var(--purple3);border:1px solid rgba(199,137,194,0.3)}
+.pill-role-BR{background:rgba(102,176,240,0.15);color:var(--blue);border:1px solid rgba(102,176,240,0.3)}
+.pill-role-MT{background:rgba(245,176,65,0.15);color:var(--amber);border:1px solid rgba(245,176,65,0.3)}
+.pill-role-GHL{background:rgba(153,153,153,0.1);color:var(--t4);border:1px solid var(--border2)}
+.pill-role-CL{background:rgba(52,211,153,0.15);color:var(--green);border:1px solid rgba(52,211,153,0.3)}
+
+.divider{height:1px;background:var(--border);margin:18px 0}
+
+/* ==== CLIENT DASHBOARD ==== */
+.hero-progress{background:linear-gradient(135deg,var(--bg2) 0%,rgba(172,102,167,0.06) 100%);border:1px solid var(--border);border-radius:18px;padding:26px 28px;margin-bottom:20px;position:relative;overflow:hidden}
+.hp-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;gap:18px}
+.hp-title{font-size:13px;font-weight:600;color:var(--purple3);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:6px;font-family:var(--mono)}
+.hp-phase{font-size:22px;font-weight:700;color:var(--t1);letter-spacing:-0.02em;margin-bottom:3px}
+.hp-sub{font-size:13px;color:var(--t4)}
+.hp-day{font-family:var(--mono);font-weight:600;font-size:42px;color:var(--t1);letter-spacing:-0.035em;line-height:1}
+.hp-day-sub{font-family:var(--mono);font-size:11px;color:var(--t4);text-align:right;margin-top:3px;letter-spacing:0.05em}
+.hp-bar{height:10px;background:var(--bg3);border-radius:8px;overflow:hidden;margin-bottom:10px;position:relative}
+.hp-bar-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple3));border-radius:8px;transition:width 0.6s ease}
+.hp-bar-checkpoints{position:absolute;top:0;left:0;right:0;height:100%;display:flex;justify-content:space-between;padding:0 1px}
+.hp-checkpoint{width:2px;height:100%;background:var(--bg4)}
+.hp-labels{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;color:var(--t5);margin-top:8px;letter-spacing:0.04em}
+
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+
+.stat-tile{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+.stat-tile-lbl{font-size:10.5px;font-weight:600;color:var(--t4);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:7px;font-family:var(--mono)}
+.stat-tile-val{font-family:var(--mono);font-weight:600;font-size:24px;color:var(--t1);letter-spacing:-0.025em;line-height:1;margin-bottom:3px}
+.stat-tile-trend{font-size:11.5px;color:var(--t4);display:flex;align-items:center;gap:4px;font-family:var(--mono)}
+.stat-tile-trend.up{color:var(--green)}
+.stat-tile-trend.down{color:var(--red)}
+
+/* Next action card */
+.next-action{background:linear-gradient(135deg,rgba(172,102,167,0.08) 0%,var(--bg2) 100%);border:1px solid rgba(172,102,167,0.3);border-radius:14px;padding:20px;margin-bottom:16px}
+.na-eyebrow{display:flex;align-items:center;gap:8px;font-size:10.5px;font-weight:600;color:var(--purple3);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:10px;font-family:var(--mono)}
+.na-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--purple);animation:pulse 2.4s infinite}
+.na-task{font-size:17px;font-weight:600;color:var(--t1);letter-spacing:-0.01em;margin-bottom:6px;line-height:1.4}
+.na-when{font-size:13px;color:var(--t4);margin-bottom:14px}
+.na-cta{display:flex;gap:10px}
+
+/* ==== PHASE TIMELINE ==== */
+.phase-timeline{display:flex;flex-direction:column;gap:8px}
+.phase-item{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:all 0.2s}
+.phase-item.current{border-color:var(--purple);background:linear-gradient(180deg,rgba(172,102,167,0.06) 0%,var(--bg2) 100%)}
+.phase-item.done{opacity:0.75}
+.phase-head{padding:16px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;user-select:none}
+.phase-num{width:34px;height:34px;border-radius:9px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:600;font-size:12.5px;color:var(--t3);flex-shrink:0}
+.phase-item.current .phase-num{background:var(--purple);color:var(--t1)}
+.phase-item.done .phase-num{background:var(--green);color:var(--bg)}
+.phase-meta{flex:1;min-width:0}
+.phase-title{font-size:14.5px;font-weight:600;color:var(--t1);letter-spacing:-0.01em;margin-bottom:2px}
+.phase-when{font-size:11.5px;color:var(--t4);font-family:var(--mono);letter-spacing:0.02em}
+.phase-status{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.phase-prog-mini{width:80px;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.phase-prog-mini-fill{height:100%;background:var(--purple);border-radius:3px}
+.phase-count{font-family:var(--mono);font-size:11px;color:var(--t4);font-weight:500;letter-spacing:0.02em}
+.phase-chev{color:var(--t5);font-size:11px;transition:transform 0.3s;width:22px;height:22px;border-radius:6px;background:var(--bg3);display:flex;align-items:center;justify-content:center}
+.phase-item.open .phase-chev{transform:rotate(180deg);background:var(--purple);color:var(--t1)}
+.phase-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease}
+.phase-item.open .phase-body{max-height:3000px}
+.phase-body-inner{padding:0 18px 16px;border-top:1px solid var(--border)}
+
+.task-row{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.task-row:last-child{border-bottom:none}
+.task-check{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--border3);flex-shrink:0;margin-top:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;background:transparent}
+.task-check.done{background:var(--green);border-color:var(--green)}
+.task-check.done::after{content:'';width:5px;height:9px;border-right:2px solid var(--bg);border-bottom:2px solid var(--bg);transform:rotate(45deg);margin-top:-2px}
+.task-text{flex:1;font-size:13.5px;line-height:1.55;color:var(--t2)}
+.task-row.done .task-text{color:var(--t5);text-decoration:line-through}
+.task-meta{display:flex;gap:8px;margin-top:4px;align-items:center;flex-wrap:wrap}
+.task-due{font-size:11px;color:var(--t5);font-family:var(--mono);letter-spacing:0.02em}
+.task-behind{color:var(--red);font-weight:600}
+.task-today{color:var(--amber);font-weight:600}
+
+/* ==== LABS / BIOMARKERS ==== */
+.marker-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.marker-card{background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:14px;transition:all 0.2s;cursor:pointer}
+.marker-card:hover{border-color:var(--border3);transform:translateY(-1px)}
+.marker-name{font-size:11.5px;font-weight:600;color:var(--t3);letter-spacing:-0.005em;margin-bottom:4px}
+.marker-cat{font-size:9.5px;color:var(--t5);font-family:var(--mono);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px}
+.marker-val-row{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
+.marker-val{font-family:var(--mono);font-weight:600;font-size:18px;color:var(--t1);letter-spacing:-0.02em}
+.marker-unit{font-size:10.5px;color:var(--t5);font-family:var(--mono)}
+.marker-status{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:600;font-family:var(--mono);letter-spacing:0.02em}
+.marker-range{font-size:10px;color:var(--t5);font-family:var(--mono);margin-top:4px}
+.marker-delta-up{color:var(--green)}
+.marker-delta-down{color:var(--red)}
+.marker-delta-flat{color:var(--t5)}
+
+/* Marker detail modal chart */
+.chart-wrap{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;margin:14px 0}
+
+/* ==== CONSOLE / PROVIDER ==== */
+.flag-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.flag-item.critical{border-left:3px solid var(--red)}
+.flag-item.warning{border-left:3px solid var(--amber)}
+.flag-severity{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.flag-severity.critical{background:rgba(239,107,107,0.12);color:var(--red)}
+.flag-severity.warning{background:rgba(245,176,65,0.12);color:var(--amber)}
+.flag-body{flex:1;min-width:0}
+.flag-title{font-size:13.5px;font-weight:600;color:var(--t1);margin-bottom:2px}
+.flag-detail{font-size:12px;color:var(--t4);line-height:1.5}
+.flag-meta{display:flex;gap:8px;align-items:center;flex-shrink:0}
+
+/* ==== MESSAGES ==== */
+.msg-thread{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid var(--border)}
+.msg-avatar{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;color:var(--t1);font-family:var(--mono);flex-shrink:0}
+.msg-body{flex:1;min-width:0}
+.msg-head{display:flex;align-items:baseline;gap:8px;margin-bottom:4px;flex-wrap:wrap}
+.msg-name{font-size:13px;font-weight:600;color:var(--t1)}
+.msg-time{font-size:10.5px;color:var(--t5);font-family:var(--mono);letter-spacing:0.02em}
+.msg-text{font-size:13.5px;color:var(--t3);line-height:1.55}
+
+/* Client roster row */
+.client-row{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all 0.2s;margin-bottom:8px}
+.client-row:hover{border-color:var(--border3);transform:translateX(2px)}
+.client-row.selected{border-color:var(--purple);background:linear-gradient(180deg,rgba(172,102,167,0.05) 0%,var(--bg2) 100%)}
+.client-avatar{width:40px;height:40px;border-radius:10px;background:var(--purple);color:var(--t1);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;font-family:var(--mono);flex-shrink:0}
+.client-meta{flex:1;min-width:0}
+.client-name{font-size:14px;font-weight:600;color:var(--t1);letter-spacing:-0.01em;margin-bottom:3px}
+.client-sub{font-size:11.5px;color:var(--t4);font-family:var(--mono);letter-spacing:0.02em;display:flex;gap:10px;flex-wrap:wrap}
+.client-prog{flex-shrink:0;text-align:right}
+.client-prog-pct{font-family:var(--mono);font-weight:600;font-size:13px;color:var(--t1)}
+.client-prog-label{font-size:10px;color:var(--t5);font-family:var(--mono);letter-spacing:0.04em;text-transform:uppercase}
+
+.tab-nav{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:20px;overflow-x:auto;scrollbar-width:none}
+.tab-nav::-webkit-scrollbar{display:none}
+.tab-btn{padding:10px 16px;background:transparent;border:none;border-bottom:2px solid transparent;color:var(--t4);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;white-space:nowrap;letter-spacing:-0.005em;display:flex;align-items:center;gap:7px;margin-bottom:-1px}
+.tab-btn:hover{color:var(--t2)}
+.tab-btn.active{color:var(--t1);border-bottom-color:var(--purple)}
+.tab-btn .count{font-size:10.5px;background:var(--bg3);color:var(--t3);padding:2px 7px;border-radius:10px;font-family:var(--mono);font-weight:600}
+.tab-btn.active .count{background:var(--purple);color:var(--t1)}
+
+/* Protocol tables */
+.protocol-section{margin-bottom:22px}
+.protocol-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.protocol-icon{width:32px;height:32px;border-radius:8px;background:rgba(172,102,167,0.12);display:flex;align-items:center;justify-content:center;font-size:15px}
+.protocol-title{font-size:14.5px;font-weight:700;color:var(--t1);letter-spacing:-0.01em}
+.protocol-sub{font-size:11.5px;color:var(--t4);font-family:var(--mono);margin-top:1px}
+.rx-row{display:grid;grid-template-columns:1.5fr 1fr 1.2fr auto;gap:14px;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:9px;margin-bottom:6px;align-items:center;font-size:13px}
+.rx-row .rx-name{font-weight:600;color:var(--t1)}
+.rx-row .rx-dose{color:var(--t3);font-family:var(--mono);font-size:12px}
+.rx-row .rx-schedule{color:var(--t4);font-size:12.5px}
+.rx-row .rx-status{justify-self:end}
+
+/* ==== SIMPLE SVG CHART ==== */
+.chart-container{width:100%;background:var(--bg3);border-radius:8px;padding:8px}
+
+/* ==== CLIENT FACING: TODAY'S FOCUS ==== */
+.focus-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px;display:flex;align-items:flex-start;gap:14px;margin-bottom:10px}
+.focus-check{width:22px;height:22px;border-radius:6px;border:2px solid var(--border3);cursor:pointer;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;background:transparent;transition:all 0.2s}
+.focus-check.done{background:var(--green);border-color:var(--green)}
+.focus-check.done::after{content:'';width:6px;height:10px;border-right:2px solid var(--bg);border-bottom:2px solid var(--bg);transform:rotate(45deg);margin-top:-2px}
+.focus-body{flex:1}
+.focus-title{font-size:14.5px;font-weight:600;color:var(--t1);letter-spacing:-0.005em;margin-bottom:4px}
+.focus-title.done{text-decoration:line-through;color:var(--t5)}
+.focus-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
+/* ==== SHIFTS CHECKBOXES ==== */
+.shifts-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.shift-tile{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;transition:all 0.2s;user-select:none}
+.shift-tile:hover{border-color:var(--border3)}
+.shift-tile.done{background:rgba(52,211,153,0.1);border-color:var(--green)}
+.shift-letter{font-family:var(--mono);font-weight:700;font-size:22px;color:var(--t3);letter-spacing:-0.03em;margin-bottom:2px}
+.shift-tile.done .shift-letter{color:var(--green)}
+.shift-label{font-size:9.5px;color:var(--t4);font-family:var(--mono);letter-spacing:0.08em;text-transform:uppercase}
+
+/* ==== TBD BANNER ==== */
+.tbd-banner{background:rgba(245,176,65,0.07);border:1px dashed rgba(245,176,65,0.35);border-radius:10px;padding:13px 16px;margin:14px 0;display:flex;align-items:flex-start;gap:11px}
+.tbd-banner-icon{color:var(--amber);font-size:16px;flex-shrink:0;margin-top:1px}
+.tbd-banner-txt{flex:1;font-size:12.5px;color:var(--t3);line-height:1.55}
+.tbd-banner-txt strong{color:var(--amber);font-weight:600}
+
+/* ==== APPOINTMENTS ==== */
+.appt-row{display:flex;align-items:center;gap:14px;padding:13px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;margin-bottom:8px}
+.appt-date{width:56px;height:56px;border-radius:10px;background:var(--bg3);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+.appt-month{font-size:9px;font-weight:700;color:var(--purple3);letter-spacing:0.12em;text-transform:uppercase;font-family:var(--mono)}
+.appt-day{font-family:var(--mono);font-weight:600;font-size:20px;color:var(--t1);line-height:1;margin-top:2px}
+.appt-body{flex:1;min-width:0}
+.appt-title{font-size:13.5px;font-weight:600;color:var(--t1);margin-bottom:3px}
+.appt-sub{font-size:11.5px;color:var(--t4);font-family:var(--mono);display:flex;gap:10px}
+
+/* ==== FOOTER ==== */
+.app-footer{padding:16px 28px;border-top:1px solid var(--border);background:var(--bg);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.app-footer-left{color:var(--t5);font-size:11.5px;font-family:var(--mono);letter-spacing:0.02em}
+.app-footer-right{color:var(--t5);font-size:11.5px;font-family:var(--mono);letter-spacing:0.02em}
+.app-footer-right strong{color:var(--t3);font-weight:500}
+
+/* ==== RESPONSIVE ==== */
+@media(max-width:1200px){
+  .marker-grid{grid-template-columns:repeat(2,1fr)}
+  .grid-4{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:900px){
+  .sidebar{display:none}
+  .role-switcher{display:none}
+  .app-header{padding:12px 16px}
+  .main-content{padding:18px 14px}
+  .grid-3{grid-template-columns:1fr}
+  .grid-2{grid-template-columns:1fr}
+  .marker-grid{grid-template-columns:1fr}
+  .shifts-grid{grid-template-columns:repeat(3,1fr)}
+  .rx-row{grid-template-columns:1fr;gap:6px}
+  .rx-row .rx-status{justify-self:start}
+  .hp-head{flex-direction:column}
+  .hp-day{font-size:32px}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const {useState, useMemo, useRef, useEffect} = React;
+
+// ============================================================================
+// JOURNEY FRAMEWORK - extended to 10 phases for 12-month track
+// ============================================================================
+
+const PHASES_12WK = [
+  {id:1, title:"Deal Closed", when:"Hour 0", range:[0,0]},
+  {id:2, title:"Golden 48 Hours", when:"Hours 1-48", range:[1,2]},
+  {id:3, title:"Kickoff Call", when:"Day 1-2", range:[1,2]},
+  {id:4, title:"Labs + Protocol", when:"Week 1-3", range:[3,21]},
+  {id:5, title:"Weekly Rhythm", when:"Weeks 2-14", range:[14,84]},
+  {id:6, title:"90-Day Retest", when:"Day 85-95", range:[85,95]},
+  {id:7, title:"100-Day Review", when:"Day 85-107", range:[85,107]}
+];
+
+const PHASES_12MO = [
+  ...PHASES_12WK.map(p => p.id === 7 ? {...p, title:"Q1 Review", when:"Day 85-107"} : p),
+  {id:8, title:"Q2 Rhythm + Retest", when:"Day 100-190", range:[100,190]},
+  {id:9, title:"Q3 Rhythm + Retest", when:"Day 180-280", range:[180,280]},
+  {id:10, title:"Q4 + Annual Review", when:"Day 270-380", range:[270,380]}
+];
+
+// Sample tasks - pulled from Jay's tracker + extended for 12-month
+const TASKS = {
+  1: [
+    {id:"1.1", owner:"JS", task:"Close the sale on the discovery call. Confirm payment received.", dueDay:0},
+    {id:"1.2", owner:"JS", task:"Set client expectations: coaching starts now, kickoff in 24-48 hrs.", dueDay:0},
+    {id:"1.3", owner:"JS", task:"Log discovery call notes in GHL contact record.", dueDay:0},
+    {id:"1.4", owner:"GHL", task:"Fire welcome email to client with homework checklist.", dueDay:0},
+    {id:"1.5", owner:"GHL", task:"Create tasks for Brooke and Fraser: deal closed, begin onboarding.", dueDay:0}
+  ],
+  2: [
+    {id:"2.1", owner:"BR", task:"Read discovery call notes in GHL. Add client to Circle.", dueDay:1},
+    {id:"2.2", owner:"BR", task:"Send personal DM. Warm, human, not templated.", dueDay:1},
+    {id:"2.3", owner:"FB", task:"Read discovery notes. Begin planning protocol direction.", dueDay:1},
+    {id:"2.4", owner:"CL", task:"Complete welcome-email homework.", dueDay:1},
+    {id:"2.5", owner:"BR", task:"Confirm onboarding form is complete. Flag gaps to Jay.", dueDay:2},
+    {id:"2.6", owner:"GHL", task:"Send automated kickoff reminders (24-hr and 1-hr SMS).", dueDay:1}
+  ],
+  3: [
+    {id:"3.1", owner:"CL", task:"Attend kickoff call.", dueDay:2},
+    {id:"3.2", owner:"JS", task:"Lead the kickoff. Set expectations: fast comms, growth mindset.", dueDay:2},
+    {id:"3.3", owner:"JS", task:"Review onboarding form live. Confirm accuracy.", dueDay:2},
+    {id:"3.4", owner:"JS", task:"Assign initial SHIFTS targets: Steps, Hydration, Identity, Fuel, Training, Share.", dueDay:2},
+    {id:"3.5", owner:"JS", task:"Explain weekly rhythm: Friday check-in, Monday/Tuesday Loom from Fraser.", dueDay:2},
+    {id:"3.6", owner:"JS", task:"RSVP client for all Wednesday Optimization Calls.", dueDay:2},
+    {id:"3.7", owner:"JS", task:"Schedule 1-, 2-, 3-month Zoom check-ins with Fraser.", dueDay:2},
+    {id:"3.8", owner:"JS", task:"Send post-call recap with first action items.", dueDay:2}
+  ],
+  4: [
+    {id:"4.1", owner:"BR", task:"Order labs. Coordinate with medical team on panel selection.", dueDay:3},
+    {id:"4.2", owner:"MT", task:"Issue lab requisition. Send prep instructions.", dueDay:4},
+    {id:"4.3", owner:"BR", task:"Send lab appointment confirmation.", dueDay:5},
+    {id:"4.4", owner:"BR", task:"Assign Program Ambassador. Send intro message.", dueDay:3},
+    {id:"4.5", owner:"BR", task:"Schedule 90-day lab retest now. Lock it in early.", dueDay:7},
+    {id:"4.6", owner:"CL", task:"Begin SHIFTS daily habits.", dueDay:2},
+    {id:"4.7", owner:"GHL", task:"Automated 24-hr lab draw reminder.", dueDay:6},
+    {id:"4.8", owner:"CL", task:"Get labs drawn.", dueDay:7},
+    {id:"4.9", owner:"MT", task:"Process lab results. Upload to client file.", dueDay:9},
+    {id:"4.10", owner:"MT", task:"Flag any critical findings for NP review.", dueDay:9},
+    {id:"4.11", owner:"FB", task:"Review lab results. Every marker.", dueDay:11},
+    {id:"4.12", owner:"FB", task:"Record Loom reviewing every marker. This is the game plan.", dueDay:11},
+    {id:"4.13", owner:"FB", task:"If results need NP involvement, flag medical team.", dueDay:11},
+    {id:"4.14", owner:"MT", task:"If flagged, schedule NP consultation directly with client.", dueDay:13},
+    {id:"4.15", owner:"CL", task:"Watch lab review Loom. Take notes. Bring questions.", dueDay:14}
+  ],
+  5: [
+    {id:"5.1", owner:"GHL", task:"Friday check-in form auto-sent at 8am local.", dueDay:12},
+    {id:"5.2", owner:"CL", task:"Submit weekly check-in form.", dueDay:12},
+    {id:"5.3", owner:"FB", task:"Review first Friday check-in form.", dueDay:15},
+    {id:"5.4", owner:"FB", task:"Record 5-10 min Loom review with specific feedback.", dueDay:16},
+    {id:"5.5", owner:"CL", task:"Watch Fraser's Loom. Implement feedback.", dueDay:17},
+    {id:"5.6", owner:"JS", task:"Host weekly Optimization Call.", dueDay:17},
+    {id:"5.7", owner:"FB", task:"Respond to quick-hit questions via Voxer under 24 hrs.", dueDay:14},
+    {id:"5.8", owner:"FB", task:"Month 1 live Zoom: review data, adjust protocol, recalibrate.", dueDay:30},
+    {id:"5.9", owner:"FB", task:"Month 2 live Zoom. Discuss 90-day retest timing.", dueDay:60},
+    {id:"5.10", owner:"BR", task:"Confirm 90-day lab retest appointment still on track.", dueDay:75}
+  ],
+  6: [
+    {id:"6.1", owner:"GHL", task:"Automated 48-hr reminder for 90-day lab retest.", dueDay:88},
+    {id:"6.2", owner:"CL", task:"Get 90-day lab retest drawn.", dueDay:90},
+    {id:"6.3", owner:"MT", task:"Issue retest requisition.", dueDay:89},
+    {id:"6.4", owner:"MT", task:"Process retest results. Upload to file.", dueDay:92},
+    {id:"6.5", owner:"MT", task:"Flag changes or concerns for Fraser and NP review.", dueDay:92}
+  ],
+  7: [
+    {id:"7.1", owner:"BR", task:"Schedule review call. Send calendar invite.", dueDay:85},
+    {id:"7.2", owner:"FB", task:"Compile before/after data: onboarding form vs current state.", dueDay:90},
+    {id:"7.3", owner:"FB", task:"Prepare summary document for review call.", dueDay:95},
+    {id:"7.4", owner:"JS", task:"Lead the review call. Celebrate. Present continuation.", dueDay:100},
+    {id:"7.5", owner:"CL", task:"Attend review call.", dueDay:100},
+    {id:"7.6", owner:"JS", task:"Ask for referral on the review call.", dueDay:100},
+    {id:"7.7", owner:"BR", task:"Send testimonial request: written, video, or before/after photos.", dueDay:100}
+  ],
+  // 12-MONTH EXTENSION PHASES
+  8: [
+    {id:"8.1", owner:"FB", task:"Protocol pivot based on Q1 data. Author: TBD.", dueDay:105, tbd:"pivot-authority"},
+    {id:"8.2", owner:"GHL", task:"Automated Q2 retest reminder (T-7 days).", dueDay:173},
+    {id:"8.3", owner:"BR", task:"Confirm Q2 retest appointment booked.", dueDay:175},
+    {id:"8.4", owner:"CL", task:"Submit Q2 retest. Consider peptide cycle-off alignment (TBD).", dueDay:180, tbd:"peptide-cycles"},
+    {id:"8.5", owner:"MT", task:"Process Q2 retest. Flag changes vs Q1.", dueDay:183},
+    {id:"8.6", owner:"FB", task:"Record Q2 Loom. Compare baseline vs Q1 vs Q2.", dueDay:185},
+    {id:"8.7", owner:"JS", task:"Lead Q2 Review Call. 30-min Zoom. Midpoint of year.", dueDay:190},
+    {id:"8.8", owner:"CL", task:"Attend Q2 Review Call.", dueDay:190}
+  ],
+  9: [
+    {id:"9.1", owner:"FB", task:"Q3 protocol adjustments. Seasonal layer (summer load, travel).", dueDay:195},
+    {id:"9.2", owner:"GHL", task:"Automated Q3 retest reminder.", dueDay:263},
+    {id:"9.3", owner:"CL", task:"Submit Q3 retest.", dueDay:270},
+    {id:"9.4", owner:"MT", task:"Process Q3 retest. Flag for Fraser.", dueDay:273},
+    {id:"9.5", owner:"FB", task:"Record Q3 Loom. 3-quarter trend overlay.", dueDay:275},
+    {id:"9.6", owner:"JS", task:"Lead Q3 Review Call. Plant renewal conversation (soft).", dueDay:280},
+    {id:"9.7", owner:"CL", task:"Attend Q3 Review Call.", dueDay:280}
+  ],
+  10: [
+    {id:"10.1", owner:"FB", task:"Q4 protocol adjustments. Weekly rhythm step-down: TBD.", dueDay:285, tbd:"rhythm-step-down"},
+    {id:"10.2", owner:"GHL", task:"Automated Q4 / annual retest reminder.", dueDay:353},
+    {id:"10.3", owner:"CL", task:"Submit Q4 / annual retest.", dueDay:360},
+    {id:"10.4", owner:"MT", task:"Process annual retest. Full-year data compiled.", dueDay:363},
+    {id:"10.5", owner:"FB", task:"Build annual summary: baseline to Q1 to Q2 to Q3 to Q4.", dueDay:365},
+    {id:"10.6", owner:"JS", task:"Annual Review Call. 45-60 min. Full biomarker walkthrough.", dueDay:370},
+    {id:"10.7", owner:"CL", task:"Attend Annual Review Call.", dueDay:370},
+    {id:"10.8", owner:"JS", task:"Present renewal offer. Renewal price: TBD.", dueDay:370, tbd:"renewal-pricing"},
+    {id:"10.9", owner:"JS", task:"Execute renewal or transition to step-down offer.", dueDay:375}
+  ]
+};
+
+const ROLE_NAMES = {JS:"Jay (Coach)", FB:"Fraser (Provider)", BR:"Brooke (Admin)", MT:"Medical / NP", GHL:"System", CL:"Client"};
+const ROLE_SHORT = {JS:"Jay", FB:"Fraser", BR:"Brooke", MT:"Medical", GHL:"System", CL:"Client"};
+
+// ============================================================================
+// BIOMARKER DEFINITIONS
+// ============================================================================
+
+const BIOMARKERS = {
+  "Total Testosterone": {unit:"ng/dL", lo:264, hi:916, cat:"HOR", desc:"Primary androgen driving energy, libido, muscle, mood"},
+  "Free Testosterone": {unit:"pg/mL", lo:8.7, hi:25.1, cat:"HOR", desc:"The fraction of testosterone actually available to tissue"},
+  "SHBG": {unit:"nmol/L", lo:16.5, hi:55.9, cat:"HOR", desc:"Binds testosterone. High SHBG reduces free T"},
+  "Estradiol": {unit:"pg/mL", lo:7.6, hi:42.6, cat:"HOR", desc:"Key estrogen. Too high or too low both cause symptoms"},
+  "DHEA-S": {unit:"ug/dL", lo:138.5, hi:475.2, cat:"HOR", desc:"Adrenal precursor hormone. Declines with age and stress"},
+  "IGF-1": {unit:"ng/mL", lo:95, hi:290, cat:"HOR", desc:"Growth hormone marker. Recovery, body comp, longevity"},
+  "Cortisol AM": {unit:"ug/dL", lo:6.2, hi:19.4, cat:"HOR", desc:"Stress hormone. Morning peak drives energy rhythm"},
+  "TSH": {unit:"uIU/mL", lo:0.45, hi:4.5, cat:"THY", desc:"Thyroid pituitary signal. Elevated means thyroid underperforming"},
+  "Free T3": {unit:"pg/mL", lo:2.0, hi:4.4, cat:"THY", desc:"The active thyroid hormone"},
+  "Free T4": {unit:"ng/dL", lo:0.82, hi:1.77, cat:"THY", desc:"Storage thyroid hormone. Converted to T3"},
+  "Reverse T3": {unit:"ng/dL", lo:9.2, hi:24.1, cat:"THY", desc:"Inactive T3. Elevated under stress, illness, caloric deficit"},
+  "Hemoglobin": {unit:"g/dL", lo:13.0, hi:17.7, cat:"CBC", desc:"Oxygen-carrying capacity"},
+  "Hematocrit": {unit:"%", lo:37.5, hi:51.0, cat:"CBC", desc:"Red cell concentration. Elevated on TRT"},
+  "ALT": {unit:"IU/L", lo:0, hi:50, cat:"MET", desc:"Liver enzyme. Elevation signals hepatic stress"},
+  "AST": {unit:"IU/L", lo:0, hi:40, cat:"MET", desc:"Liver enzyme"},
+  "Glucose": {unit:"mg/dL", lo:65, hi:99, cat:"MET", desc:"Fasting blood sugar"},
+  "HbA1c": {unit:"%", lo:4.0, hi:5.6, cat:"MET", desc:"3-month average blood sugar"},
+  "Fasting Insulin": {unit:"uIU/mL", lo:2.6, hi:24.9, cat:"MET", desc:"Insulin response. Low-normal is ideal"},
+  "Total Cholesterol": {unit:"mg/dL", lo:100, hi:199, cat:"LIP", desc:"Total circulating cholesterol"},
+  "LDL": {unit:"mg/dL", lo:0, hi:129, cat:"LIP", desc:"Low-density lipoprotein"},
+  "HDL": {unit:"mg/dL", lo:40, hi:999, cat:"LIP", desc:"Protective lipoprotein"},
+  "Triglycerides": {unit:"mg/dL", lo:0, hi:149, cat:"LIP", desc:"Blood fats. Reflects diet and metabolic health"},
+  "ApoB": {unit:"mg/dL", lo:0, hi:90, cat:"LIP", desc:"Atherogenic particle count. Cardiovascular risk marker"},
+  "hs-CRP": {unit:"mg/L", lo:0, hi:3.0, cat:"INF", desc:"Inflammation marker. Low is ideal"},
+  "Homocysteine": {unit:"umol/L", lo:0, hi:11.4, cat:"INF", desc:"Amino acid linked to cardiovascular and cognitive risk"},
+  "Ferritin": {unit:"ng/mL", lo:30, hi:400, cat:"IRN", desc:"Iron storage. Affects energy and thyroid"},
+  "Vitamin D": {unit:"ng/mL", lo:30, hi:100, cat:"VIT", desc:"Hormone-like vitamin. Affects everything"},
+  "B12": {unit:"pg/mL", lo:232, hi:1245, cat:"VIT", desc:"Energy, methylation, neurological function"},
+  "Folate": {unit:"ng/mL", lo:3.1, hi:17.5, cat:"VIT", desc:"Methylation co-factor"},
+  "Magnesium RBC": {unit:"mg/dL", lo:4.2, hi:6.8, cat:"VIT", desc:"True magnesium status (not serum)"}
+};
+
+const CAT_COLORS = {
+  HOR:{c:"#AC66A7", label:"Hormones"},
+  THY:{c:"#66b0f0", label:"Thyroid"},
+  CBC:{c:"#ef6b6b", label:"Blood Count"},
+  MET:{c:"#f5b041", label:"Metabolic"},
+  LIP:{c:"#c789c2", label:"Lipids"},
+  INF:{c:"#34D399", label:"Inflammation"},
+  IRN:{c:"#e07b3b", label:"Iron"},
+  VIT:{c:"#3bba6a", label:"Vitamins"}
+};
+
+// ============================================================================
+// MOCK CLIENTS (5 demo clients across phases and tracks)
+// ============================================================================
+
+const CLIENTS = [
+  {
+    id:"cl-1", name:"Marcus Reeves", email:"marcus@example.com", phone:"(503) 555-0142",
+    track:"12-month", startDate:"2026-01-15", initials:"MR",
+    age:42, sex:"M", goals:"Body recomp, reclaim energy, optimize hormones",
+    currentPhase:5, dayOfJourney:98,
+    draws:[
+      {id:"d1", date:"Jan 20, 2026", label:"Baseline", day:5, values:{
+        "Total Testosterone":385, "Free Testosterone":6.2, "SHBG":42, "Estradiol":18, "DHEA-S":165, "IGF-1":125, "Cortisol AM":16.8,
+        "TSH":2.8, "Free T3":2.4, "Free T4":1.0, "Reverse T3":22,
+        "Hemoglobin":15.2, "Hematocrit":46.5,
+        "ALT":48, "AST":32, "Glucose":96, "HbA1c":5.5, "Fasting Insulin":11.2,
+        "Total Cholesterol":215, "LDL":142, "HDL":42, "Triglycerides":165, "ApoB":108,
+        "hs-CRP":2.8, "Homocysteine":11.8,
+        "Ferritin":78, "Vitamin D":24, "B12":445, "Folate":8.2, "Magnesium RBC":4.8
+      }},
+      {id:"d2", date:"Apr 15, 2026", label:"Q1 Retest (90-Day)", day:90, values:{
+        "Total Testosterone":620, "Free Testosterone":14.8, "SHBG":38, "Estradiol":28, "DHEA-S":225, "IGF-1":185, "Cortisol AM":13.5,
+        "TSH":1.9, "Free T3":3.1, "Free T4":1.2, "Reverse T3":16,
+        "Hemoglobin":16.1, "Hematocrit":48.2,
+        "ALT":32, "AST":26, "Glucose":88, "HbA1c":5.2, "Fasting Insulin":6.8,
+        "Total Cholesterol":188, "LDL":112, "HDL":52, "Triglycerides":105, "ApoB":88,
+        "hs-CRP":1.2, "Homocysteine":9.2,
+        "Ferritin":112, "Vitamin D":52, "B12":685, "Folate":12.5, "Magnesium RBC":5.8
+      }}
+    ]
+  },
+  {
+    id:"cl-2", name:"Sarah Hayes", email:"sarah@example.com", phone:"(617) 555-0398",
+    track:"12-week", startDate:"2026-03-01", initials:"SH",
+    age:38, sex:"F", goals:"Hormone balance, fat loss, sleep optimization",
+    currentPhase:4, dayOfJourney:52,
+    draws:[
+      {id:"d1", date:"Mar 8, 2026", label:"Baseline", day:7, values:{
+        "Total Testosterone":42, "Free Testosterone":2.1, "SHBG":88, "Estradiol":142, "DHEA-S":85, "IGF-1":155, "Cortisol AM":22.5,
+        "TSH":3.8, "Free T3":2.2, "Free T4":0.9, "Reverse T3":21,
+        "Hemoglobin":12.8, "Hematocrit":38.2,
+        "ALT":28, "AST":22, "Glucose":92, "HbA1c":5.3, "Fasting Insulin":9.5,
+        "Total Cholesterol":195, "LDL":118, "HDL":58, "Triglycerides":125, "ApoB":92,
+        "hs-CRP":2.2, "Homocysteine":10.5,
+        "Ferritin":28, "Vitamin D":18, "B12":385, "Folate":7.5, "Magnesium RBC":4.5
+      }}
+    ]
+  },
+  {
+    id:"cl-3", name:"Daniel Chen", email:"daniel@example.com", phone:"(415) 555-0721",
+    track:"12-month", startDate:"2025-10-20", initials:"DC",
+    age:51, sex:"M", goals:"Longevity, metabolic health, cognitive performance",
+    currentPhase:9, dayOfJourney:186,
+    draws:[
+      {id:"d1", date:"Oct 25, 2025", label:"Baseline", day:5, values:{
+        "Total Testosterone":425, "Free Testosterone":7.8, "SHBG":58, "Estradiol":22, "DHEA-S":145, "IGF-1":142, "Cortisol AM":18.2,
+        "TSH":3.2, "Free T3":2.6, "Free T4":1.1, "Reverse T3":19,
+        "Hemoglobin":14.8, "Hematocrit":44.1,
+        "ALT":52, "AST":38, "Glucose":102, "HbA1c":5.7, "Fasting Insulin":13.5,
+        "Total Cholesterol":228, "LDL":148, "HDL":45, "Triglycerides":185, "ApoB":115,
+        "hs-CRP":3.2, "Homocysteine":12.8,
+        "Ferritin":98, "Vitamin D":28, "B12":395, "Folate":8.8, "Magnesium RBC":4.6
+      }},
+      {id:"d2", date:"Jan 23, 2026", label:"Q1 Retest", day:95, values:{
+        "Total Testosterone":685, "Free Testosterone":15.5, "SHBG":52, "Estradiol":30, "DHEA-S":218, "IGF-1":195, "Cortisol AM":14.8,
+        "TSH":2.1, "Free T3":3.2, "Free T4":1.3, "Reverse T3":14,
+        "Hemoglobin":15.8, "Hematocrit":46.8,
+        "ALT":38, "AST":28, "Glucose":92, "HbA1c":5.3, "Fasting Insulin":7.2,
+        "Total Cholesterol":192, "LDL":115, "HDL":55, "Triglycerides":110, "ApoB":92,
+        "hs-CRP":1.5, "Homocysteine":9.8,
+        "Ferritin":128, "Vitamin D":55, "B12":725, "Folate":14, "Magnesium RBC":5.9
+      }},
+      {id:"d3", date:"Apr 18, 2026", label:"Q2 Retest", day:180, values:{
+        "Total Testosterone":712, "Free Testosterone":16.8, "SHBG":48, "Estradiol":32, "DHEA-S":245, "IGF-1":208, "Cortisol AM":12.5,
+        "TSH":1.8, "Free T3":3.4, "Free T4":1.3, "Reverse T3":12,
+        "Hemoglobin":16.2, "Hematocrit":47.5,
+        "ALT":32, "AST":25, "Glucose":86, "HbA1c":5.1, "Fasting Insulin":5.8,
+        "Total Cholesterol":182, "LDL":105, "HDL":62, "Triglycerides":92, "ApoB":82,
+        "hs-CRP":0.8, "Homocysteine":8.2,
+        "Ferritin":142, "Vitamin D":62, "B12":815, "Folate":15.5, "Magnesium RBC":6.1
+      }}
+    ]
+  },
+  {
+    id:"cl-4", name:"Jessica Park", email:"jessica@example.com", phone:"(212) 555-0584",
+    track:"12-week", startDate:"2026-04-05", initials:"JP",
+    age:34, sex:"F", goals:"Recovery from chronic fatigue, hormone recovery post-kids",
+    currentPhase:2, dayOfJourney:18,
+    draws:[]
+  },
+  {
+    id:"cl-5", name:"Anthony Rivera", email:"anthony@example.com", phone:"(305) 555-0829",
+    track:"12-month", startDate:"2025-07-10", initials:"AR",
+    age:46, sex:"M", goals:"Peak performance, cognitive edge, long-term optimization",
+    currentPhase:10, dayOfJourney:287,
+    draws:[
+      {id:"d1", date:"Jul 15, 2025", label:"Baseline", day:5, values:{
+        "Total Testosterone":452, "Free Testosterone":8.5, "SHBG":52, "Estradiol":24, "DHEA-S":178, "IGF-1":168, "Cortisol AM":17.2,
+        "TSH":2.4, "Free T3":2.8, "Free T4":1.1, "Reverse T3":17,
+        "Hemoglobin":15.5, "Hematocrit":45.8,
+        "ALT":42, "AST":30, "Glucose":94, "HbA1c":5.4, "Fasting Insulin":9.8,
+        "Total Cholesterol":205, "LDL":132, "HDL":48, "Triglycerides":135, "ApoB":98,
+        "hs-CRP":2.1, "Homocysteine":10.8,
+        "Ferritin":105, "Vitamin D":32, "B12":485, "Folate":9.5, "Magnesium RBC":5.1
+      }},
+      {id:"d2", date:"Oct 12, 2025", label:"Q1 Retest", day:95, values:{
+        "Total Testosterone":725, "Free Testosterone":17.2, "SHBG":45, "Estradiol":32, "DHEA-S":265, "IGF-1":215, "Cortisol AM":13.8,
+        "TSH":1.6, "Free T3":3.4, "Free T4":1.3, "Reverse T3":13,
+        "Hemoglobin":16.5, "Hematocrit":48.5,
+        "ALT":28, "AST":22, "Glucose":85, "HbA1c":5.0, "Fasting Insulin":5.5,
+        "Total Cholesterol":185, "LDL":108, "HDL":58, "Triglycerides":95, "ApoB":85,
+        "hs-CRP":1.0, "Homocysteine":8.8,
+        "Ferritin":138, "Vitamin D":58, "B12":785, "Folate":14.2, "Magnesium RBC":6.2
+      }},
+      {id:"d3", date:"Jan 15, 2026", label:"Q2 Retest", day:190, values:{
+        "Total Testosterone":782, "Free Testosterone":18.8, "SHBG":42, "Estradiol":35, "DHEA-S":295, "IGF-1":235, "Cortisol AM":12.2,
+        "TSH":1.4, "Free T3":3.6, "Free T4":1.4, "Reverse T3":11,
+        "Hemoglobin":16.8, "Hematocrit":49.2,
+        "ALT":25, "AST":20, "Glucose":82, "HbA1c":4.9, "Fasting Insulin":4.8,
+        "Total Cholesterol":175, "LDL":98, "HDL":65, "Triglycerides":82, "ApoB":78,
+        "hs-CRP":0.6, "Homocysteine":7.8,
+        "Ferritin":155, "Vitamin D":65, "B12":925, "Folate":16.8, "Magnesium RBC":6.4
+      }},
+      {id:"d4", date:"Apr 8, 2026", label:"Q3 Retest", day:275, values:{
+        "Total Testosterone":758, "Free Testosterone":18.2, "SHBG":40, "Estradiol":34, "DHEA-S":285, "IGF-1":228, "Cortisol AM":11.8,
+        "TSH":1.3, "Free T3":3.5, "Free T4":1.4, "Reverse T3":10,
+        "Hemoglobin":17.1, "Hematocrit":50.1,
+        "ALT":22, "AST":18, "Glucose":80, "HbA1c":4.8, "Fasting Insulin":4.5,
+        "Total Cholesterol":168, "LDL":92, "HDL":68, "Triglycerides":78, "ApoB":74,
+        "hs-CRP":0.5, "Homocysteine":7.5,
+        "Ferritin":148, "Vitamin D":68, "B12":955, "Folate":17.5, "Magnesium RBC":6.3
+      }}
+    ]
+  }
+];
+
+// ============================================================================
+// MOCK PROTOCOLS
+// ============================================================================
+
+const PROTOCOLS = {
+  "cl-1": {
+    updated: "Apr 15, 2026",
+    peptides: [
+      {name:"BPC-157", dose:"250mcg", schedule:"1x/day subQ, 8-week cycle", status:"active", notes:"Recovery, gut health"},
+      {name:"Ipamorelin", dose:"200mcg", schedule:"Pre-bed subQ, 5 nights on / 2 off", status:"active", notes:"Sleep, recovery, IGF-1 support"},
+      {name:"TB-500", dose:"2mg", schedule:"2x/week subQ, 6-week cycle", status:"queued", notes:"Starts Q2"}
+    ],
+    supplements: [
+      {name:"Vitamin D3 + K2", dose:"10,000 IU / 200mcg", schedule:"1x/day with fat", status:"active", notes:"Baseline was 24, target 50-70"},
+      {name:"Magnesium Glycinate", dose:"400mg", schedule:"Pre-bed", status:"active"},
+      {name:"Methylated B-Complex", dose:"1 cap", schedule:"AM with food", status:"active", notes:"Homocysteine was 11.8"},
+      {name:"Omega-3 EPA/DHA", dose:"2g combined", schedule:"2x/day with meals", status:"active"},
+      {name:"Creatine Monohydrate", dose:"5g", schedule:"Daily, timing flexible", status:"active"},
+      {name:"Berberine", dose:"500mg", schedule:"3x/day with meals", status:"active", notes:"Metabolic support"}
+    ],
+    nutrition: "Protein floor: 1g per lb bodyweight. Carbs cycled around training (higher on lift days). Eating window: 10am-8pm. No snacking.",
+    training: "4x/week strength (upper/lower split). 2x/week zone 2 cardio, 30 min. 1x/week sprint intervals.",
+    lifestyle: "Sleep: 10:30pm lights out, 6:30am wake. Cold exposure 3x/week post-training. Sauna 3x/week, 20 min."
+  },
+  "cl-2": {
+    updated: "Apr 14, 2026",
+    peptides: [
+      {name:"KPV", dose:"500mcg", schedule:"1x/day subQ, 30-day cycle", status:"active", notes:"Gut inflammation"},
+      {name:"Glutathione", dose:"200mg", schedule:"2x/week IM", status:"active", notes:"Detox support, skin"}
+    ],
+    supplements: [
+      {name:"Vitamin D3 + K2", dose:"10,000 IU / 200mcg", schedule:"1x/day with fat", status:"active"},
+      {name:"Ashwagandha (KSM-66)", dose:"600mg", schedule:"AM + PM", status:"active", notes:"Cortisol was 22.5"},
+      {name:"Iron Bisglycinate", dose:"25mg", schedule:"Every other day with vit C", status:"active", notes:"Ferritin was 28"},
+      {name:"Thyroid support (Selenium + Zinc)", dose:"200mcg / 15mg", schedule:"Daily", status:"active"}
+    ],
+    nutrition: "Caloric maintenance first. Protein: 0.8g/lb. Remove processed sugar and seed oils. Focus whole foods.",
+    training: "3x/week strength (full body). 3x/week walking, 45 min. No HIIT until cortisol recovers.",
+    lifestyle: "Sleep priority: 9:30pm wind-down, 7 hrs minimum. Morning sunlight within 30 min of waking. Zero caffeine after 12pm."
+  },
+  "cl-3": {
+    updated: "Apr 18, 2026",
+    peptides: [
+      {name:"Epithalon", dose:"10mg", schedule:"1x/day subQ, 20-day cycle (Q2)", status:"active", notes:"Longevity focus"},
+      {name:"MOTS-c", dose:"5mg", schedule:"2x/week subQ", status:"active", notes:"Metabolic, mitochondrial"},
+      {name:"BPC-157", dose:"500mcg", schedule:"1x/day, 8-week cycles", status:"completed"}
+    ],
+    supplements: [
+      {name:"NAD+ precursor (NR)", dose:"300mg", schedule:"AM", status:"active"},
+      {name:"TMG", dose:"1g", schedule:"AM", status:"active", notes:"Methylation support"},
+      {name:"Omega-3 EPA/DHA", dose:"3g", schedule:"With meals", status:"active"},
+      {name:"Resveratrol", dose:"500mg", schedule:"AM with fat", status:"active"},
+      {name:"CoQ10 (Ubiquinol)", dose:"200mg", schedule:"AM with fat", status:"active"}
+    ],
+    nutrition: "Time-restricted eating: 12pm-8pm. Mediterranean-style base. Low refined carb. Red meat 2x/week.",
+    training: "4x/week: 2 strength, 2 zone 2. Weekly long walk 60+ min.",
+    lifestyle: "Sleep 7.5 hrs minimum. Sauna 4x/week. Cold plunge 3x/week. HRV monitored via Oura."
+  }
+};
+
+// ============================================================================
+// MOCK MESSAGES
+// ============================================================================
+
+const MESSAGES = {
+  "cl-1": [
+    {id:"m1", from:"FB", role:"Fraser", time:"Today, 9:42 AM", text:"Just watched your Friday check-in. Sleep numbers are finally stacking. Keep the 10:30pm cutoff sharp through the week. We'll pivot the training split slightly to add a pulling day."},
+    {id:"m2", from:"CL", role:"You", time:"Today, 10:15 AM", text:"Appreciate it. One question - should I be taking the BPC closer to training or just morning?"},
+    {id:"m3", from:"FB", role:"Fraser", time:"Today, 10:22 AM", text:"Morning is fine. What matters is consistency more than timing on this one. If you skip a day no stress, just don't let it become 3."},
+    {id:"m4", from:"JS", role:"Jay", time:"Yesterday, 5:15 PM", text:"Big week coming up - Q2 retest prep starts soon. Brooke will reach out tomorrow to lock the draw appointment."},
+    {id:"m5", from:"CL", role:"You", time:"Mar 28, 5:10 PM", text:"Energy is noticeably different this week. Not a flash - steady. Sleep feels deeper too."},
+    {id:"m6", from:"JS", role:"Jay", time:"Mar 28, 5:45 PM", text:"This is the compound phase. Steady wins here. Keep the inputs clean, the outputs take care of themselves."}
+  ],
+  "cl-2": [
+    {id:"m1", from:"FB", role:"Fraser", time:"Today, 11:00 AM", text:"Lab review Loom landing in your inbox today. Short version: ferritin is the priority, thyroid is secondary. We'll work both in parallel."},
+    {id:"m2", from:"BR", role:"Brooke", time:"Yesterday, 2:30 PM", text:"Your Program Ambassador is Lisa. She'll be in touch this week. Same journey, 6 months ahead of you."}
+  ],
+  "cl-3": [
+    {id:"m1", from:"FB", role:"Fraser", time:"Today, 8:30 AM", text:"Q2 results are phenomenal. ApoB down 10 points, hs-CRP now under 1.0, fasting insulin under 6. You've moved from 'optimized' to 'elite' on the metabolic side."},
+    {id:"m2", from:"JS", role:"Jay", time:"Yesterday, 4:20 PM", text:"Adding a new piece for Q3 - we want to test NAD+ levels and maybe layer in a summer-specific stack. Details on the Q2 review call next week."}
+  ]
+};
+
+// ============================================================================
+// DUE DATE HELPERS
+// ============================================================================
+
+function taskStatus(task, currentDay) {
+  if (task._done) return "done";
+  if (task.dueDay < currentDay - 2) return "behind";
+  if (Math.abs(task.dueDay - currentDay) <= 1) return "today";
+  if (task.dueDay > currentDay) return "upcoming";
+  return "today";
+}
+
+function phaseProgress(phaseId, currentPhase, phaseDoneStates) {
+  if (phaseId < currentPhase) return 1;
+  if (phaseId > currentPhase) return 0;
+  const tasks = TASKS[phaseId] || [];
+  if (!tasks.length) return 0;
+  const done = tasks.filter(t => phaseDoneStates[t.id]).length;
+  return done / tasks.length;
+}
+
+function getPhasesForTrack(track) {
+  return track === "12-month" ? PHASES_12MO : PHASES_12WK;
+}
+
+// ============================================================================
+// SVG CHART COMPONENT
+// ============================================================================
+
+function BiomarkerChart({marker, draws}) {
+  const def = BIOMARKERS[marker];
+  if (!def || !draws.length) return <div style={{color:"var(--t5)", fontSize:13, padding:16, textAlign:"center"}}>No data yet</div>;
+
+  const pts = draws.map(d => ({date: d.date.split(',')[0], label: d.label, value: d.values[marker]})).filter(p => p.value != null);
+  if (!pts.length) return <div style={{color:"var(--t5)", fontSize:13, padding:16}}>Marker not tested</div>;
+
+  const vals = pts.map(p => p.value);
+  const mn = Math.min(Math.min(...vals), def.lo) * 0.85;
+  const mx = Math.max(Math.max(...vals), def.hi) * 1.12;
+  const range = mx - mn || 1;
+  const W = 620, H = 240, PL = 56, PR = 24, PT = 22, PB = 42;
+  const cw = W - PL - PR, ch = H - PT - PB;
+  const clr = CAT_COLORS[def.cat]?.c || "#AC66A7";
+
+  const toX = (i) => PL + (i / Math.max(pts.length - 1, 1)) * cw;
+  const toY = (v) => PT + ch - (((v - mn) / range) * ch);
+
+  const line = pts.map((p, i) => `${i === 0 ? 'M' : 'L'}${toX(i).toFixed(1)},${toY(p.value).toFixed(1)}`).join(' ');
+  const area = line + ` L${toX(pts.length-1).toFixed(1)},${(PT+ch).toFixed(1)} L${toX(0).toFixed(1)},${(PT+ch).toFixed(1)} Z`;
+
+  const hiY = def.hi < 999 ? toY(def.hi) : null;
+  const loY = def.lo > 0 ? toY(def.lo) : null;
+  const gradId = "g_" + marker.replace(/[^a-z0-9]/gi, '');
+
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} style={{width:"100%", height:"auto", maxHeight:260}}>
+      <defs>
+        <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={clr} stopOpacity="0.3"/>
+          <stop offset="100%" stopColor={clr} stopOpacity="0.02"/>
+        </linearGradient>
+      </defs>
+      {[0, 0.25, 0.5, 0.75, 1].map(f => <line key={f} x1={PL} y1={PT+ch*f} x2={W-PR} y2={PT+ch*f} stroke="var(--border)" strokeWidth="1"/>)}
+      {hiY != null && hiY >= PT && hiY <= PT+ch && (
+        <g>
+          <line x1={PL} y1={hiY} x2={W-PR} y2={hiY} stroke="#ef6b6b" strokeWidth="1" strokeOpacity="0.45" strokeDasharray="5 4"/>
+          <text x={W-PR+3} y={hiY+4} fill="#ef6b6b" fontSize="10" fontWeight="600" fontFamily="var(--mono)">H:{def.hi}</text>
+        </g>
+      )}
+      {loY != null && loY >= PT && loY <= PT+ch && (
+        <g>
+          <line x1={PL} y1={loY} x2={W-PR} y2={loY} stroke="#f5b041" strokeWidth="1" strokeOpacity="0.45" strokeDasharray="5 4"/>
+          <text x={W-PR+3} y={loY+4} fill="#f5b041" fontSize="10" fontWeight="600" fontFamily="var(--mono)">L:{def.lo}</text>
+        </g>
+      )}
+      <path d={area} fill={`url(#${gradId})`}/>
+      <path d={line} fill="none" stroke={clr} strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round"/>
+      {pts.map((p, i) => (
+        <g key={i}>
+          <circle cx={toX(i)} cy={toY(p.value)} r="5" fill="var(--bg)" stroke={clr} strokeWidth="2.5"/>
+          <text x={toX(i)} y={toY(p.value)-11} textAnchor="middle" fill={clr} fontSize="11.5" fontWeight="700" fontFamily="var(--mono)">{p.value}</text>
+          <text x={toX(i)} y={H-18} textAnchor="middle" fill="var(--t4)" fontSize="10.5" fontWeight="500" fontFamily="var(--mono)">{p.date}</text>
+          <text x={toX(i)} y={H-5} textAnchor="middle" fill="var(--t5)" fontSize="9.5" fontWeight="500" fontFamily="var(--mono)">{p.label}</text>
+        </g>
+      ))}
+      <text x={PL-8} y={PT+5} textAnchor="end" fill="var(--t5)" fontSize="10" fontWeight="500" fontFamily="var(--mono)">{mx.toFixed(0)}</text>
+      <text x={PL-8} y={PT+ch} textAnchor="end" fill="var(--t5)" fontSize="10" fontWeight="500" fontFamily="var(--mono)">{mn.toFixed(0)}</text>
+    </svg>
+  );
+}
+
+// ============================================================================
+// TBD BANNER
+// ============================================================================
+
+function TBDBanner({type}) {
+  const copy = {
+    "pivot-authority": <span><strong>Open doctrine question:</strong> Protocol pivot authority isn't locked. Currently Fraser-led, but NP involvement at quarterly boundaries needs to be defined. Decision pending.</span>,
+    "peptide-cycles": <span><strong>Open doctrine question:</strong> Quarterly retest timing vs peptide cycle-off windows. If draw hits mid-cycle the data's noisy. Alignment rule pending.</span>,
+    "rhythm-step-down": <span><strong>Open doctrine question:</strong> Weekly rhythm cadence across months 4-12. Does weekly check-in / biweekly call continue unchanged, or step down quarter-over-quarter? Decision pending.</span>,
+    "renewal-pricing": <span><strong>Open doctrine question:</strong> Year 2 renewal pricing for existing 12-month clients. Locked $9,997? Loyalty discount? Step to $14,997? Decision pending.</span>
+  };
+  return (
+    <div className="tbd-banner">
+      <div className="tbd-banner-icon">&#9888;</div>
+      <div className="tbd-banner-txt">{copy[type]}</div>
+    </div>
+  );
+}
+
+// ============================================================================
+// ROOT APP
+// ============================================================================
+
+function App() {
+  const [role, setRole] = useState("CL");  // CL, JS, FB, BR
+  const [activeClientId, setActiveClientId] = useState("cl-1");
+  const [view, setView] = useState("dashboard");
+
+  // Per-client task completion state
+  const [taskDone, setTaskDone] = useState({});
+  const [shiftsDone, setShiftsDone] = useState({S:true, H:true, I:false, F:true, T:true, Sh:false});
+
+  const activeClient = CLIENTS.find(c => c.id === activeClientId);
+
+  const handleRoleSwitch = (newRole) => {
+    setRole(newRole);
+    // Reset view to role-appropriate default
+    if (newRole === "CL") setView("dashboard");
+    else if (newRole === "JS") setView("roster");
+    else if (newRole === "FB") setView("review-queue");
+    else if (newRole === "BR") setView("operations");
+  };
+
+  const userInfo = {
+    CL: {name: activeClient?.name || "Client", role: "Elite Member", avatar: activeClient?.initials || "CL", color: "var(--green)"},
+    JS: {name: "Jay Soileau", role: "Lead Coach / CEO", avatar: "JS", color: "var(--purple)"},
+    FB: {name: "Fraser Buck", role: "Provider / Protocol Design", avatar: "FB", color: "var(--purple3)"},
+    BR: {name: "Brooke Ellis", role: "Operations & Admin", avatar: "BR", color: "var(--blue)"}
+  }[role];
+
+  return (
+    <div>
+      <header className="app-header">
+        <div style={{display:"flex", alignItems:"center", gap:16}}>
+          <a href="index.html" className="app-brand" aria-label="Back to home" style={{textDecoration:"none", color:"inherit"}}>
+            <div className="app-mark">OH</div>
+            <div className="app-brand-txt">
+              <span className="app-brand-top">The</span>
+              <span className="app-brand-bot">Optimized Human</span>
+            </div>
+          </a>
+          <div className="demo-pill"><span className="dot"></span>Demo Mode</div>
+        </div>
+
+        <div className="role-switcher" role="tablist" aria-label="Switch portal view">
+          {["CL", "JS", "FB", "BR"].map(r => (
+            <button
+              key={r}
+              data-role={r}
+              className={"role-btn" + (role === r ? " active" : "")}
+              onClick={() => handleRoleSwitch(r)}
+            >
+              <span className="role-init">{r === "CL" ? "ME" : r}</span>
+              {r === "CL" ? "Client" : r === "JS" ? "Coach" : r === "FB" ? "Provider" : "Admin"}
+            </button>
+          ))}
+        </div>
+
+        <div className="header-right">
+          <div className="user-pill">
+            <div className="user-avatar" style={{background:userInfo.color}}>{userInfo.avatar}</div>
+            <div className="user-info">
+              <span className="user-name">{userInfo.name}</span>
+              <span className="user-role">{userInfo.role}</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div className="app-shell">
+        {role === "CL" && <ClientSidebar view={view} setView={setView} client={activeClient} />}
+        {role === "JS" && <CoachSidebar view={view} setView={setView} />}
+        {role === "FB" && <ProviderSidebar view={view} setView={setView} />}
+        {role === "BR" && <AdminSidebar view={view} setView={setView} />}
+
+        <main className="main-content">
+          {role === "CL" && <ClientView view={view} client={activeClient} taskDone={taskDone} setTaskDone={setTaskDone} shiftsDone={shiftsDone} setShiftsDone={setShiftsDone} />}
+          {role === "JS" && <CoachView view={view} activeClientId={activeClientId} setActiveClientId={setActiveClientId} taskDone={taskDone} setTaskDone={setTaskDone} />}
+          {role === "FB" && <ProviderView view={view} activeClientId={activeClientId} setActiveClientId={setActiveClientId} />}
+          {role === "BR" && <AdminView view={view} />}
+        </main>
+      </div>
+
+      <footer className="app-footer">
+        <div className="app-footer-left">&copy; 2026 The Optimized Human LLC. HIPAA-compliant. RUO compounds.</div>
+        <div className="app-footer-right">Clinical platform powered by <strong>MedLabIQ</strong></div>
+      </footer>
+    </div>
+  );
+}
+
+// ============================================================================
+// SIDEBARS
+// ============================================================================
+
+function SidebarLink({active, onClick, icon, label, count}) {
+  return (
+    <button className={"sidebar-link" + (active ? " active" : "")} onClick={onClick}>
+      <span className="ico">{icon}</span>
+      <span>{label}</span>
+      {count != null && <span className="count">{count}</span>}
+    </button>
+  );
+}
+
+function ClientSidebar({view, setView, client}) {
+  return (
+    <aside className="sidebar">
+      <div className="sidebar-section">
+        <div className="sidebar-label">My Journey</div>
+        <SidebarLink active={view==="dashboard"} onClick={()=>setView("dashboard")} icon="&#9670;" label="Dashboard"/>
+        <SidebarLink active={view==="journey"} onClick={()=>setView("journey")} icon="&#9678;" label="Journey"/>
+        <SidebarLink active={view==="labs"} onClick={()=>setView("labs")} icon="&#9733;" label="My Labs" count={client?.draws?.length || 0}/>
+        <SidebarLink active={view==="protocol"} onClick={()=>setView("protocol")} icon="&#9679;" label="Protocol"/>
+      </div>
+      <div className="sidebar-section">
+        <div className="sidebar-label">Communication</div>
+        <SidebarLink active={view==="messages"} onClick={()=>setView("messages")} icon="&#9672;" label="Messages" count={3}/>
+        <SidebarLink active={view==="appointments"} onClick={()=>setView("appointments")} icon="&#9645;" label="Appointments"/>
+        <SidebarLink active={view==="documents"} onClick={()=>setView("documents")} icon="&#9644;" label="Documents"/>
+      </div>
+    </aside>
+  );
+}
+
+function CoachSidebar({view, setView}) {
+  return (
+    <aside className="sidebar">
+      <div className="sidebar-section">
+        <div className="sidebar-label">Coach View</div>
+        <SidebarLink active={view==="roster"} onClick={()=>setView("roster")} icon="&#9632;" label="Client Roster" count={5}/>
+        <SidebarLink active={view==="today"} onClick={()=>setView("today")} icon="&#9733;" label="Today's Focus" count={7}/>
+        <SidebarLink active={view==="calls"} onClick={()=>setView("calls")} icon="&#9645;" label="Calls This Week" count={4}/>
+      </div>
+      <div className="sidebar-section">
+        <div className="sidebar-label">Client Work</div>
+        <SidebarLink active={view==="client-detail"} onClick={()=>setView("client-detail")} icon="&#9670;" label="Client Deep-Dive"/>
+        <SidebarLink active={view==="messages-all"} onClick={()=>setView("messages-all")} icon="&#9672;" label="All Messages" count={12}/>
+      </div>
+      <div className="sidebar-section">
+        <div className="sidebar-label">Business</div>
+        <SidebarLink active={view==="pipeline"} onClick={()=>setView("pipeline")} icon="&#9679;" label="Pipeline"/>
+      </div>
+    </aside>
+  );
+}
+
+function ProviderSidebar({view, setView}) {
+  return (
+    <aside className="sidebar">
+      <div className="sidebar-section">
+        <div className="sidebar-label">Provider Console</div>
+        <SidebarLink active={view==="review-queue"} onClick={()=>setView("review-queue")} icon="&#9888;" label="Review Queue" count={3}/>
+        <SidebarLink active={view==="flags"} onClick={()=>setView("flags")} icon="&#9898;" label="Active Flags" count={6}/>
+        <SidebarLink active={view==="lab-library"} onClick={()=>setView("lab-library")} icon="&#9679;" label="Lab Library"/>
+      </div>
+      <div className="sidebar-section">
+        <div className="sidebar-label">Protocol Work</div>
+        <SidebarLink active={view==="protocol-editor"} onClick={()=>setView("protocol-editor")} icon="&#9670;" label="Protocol Editor"/>
+        <SidebarLink active={view==="loom-queue"} onClick={()=>setView("loom-queue")} icon="&#9645;" label="Loom Queue" count={2}/>
+      </div>
+    </aside>
+  );
+}
+
+function AdminSidebar({view, setView}) {
+  return (
+    <aside className="sidebar">
+      <div className="sidebar-section">
+        <div className="sidebar-label">Operations</div>
+        <SidebarLink active={view==="operations"} onClick={()=>setView("operations")} icon="&#9679;" label="All Clients" count={5}/>
+        <SidebarLink active={view==="onboarding"} onClick={()=>setView("onboarding")} icon="&#9670;" label="Onboarding" count={1}/>
+        <SidebarLink active={view==="schedule"} onClick={()=>setView("schedule")} icon="&#9645;" label="Scheduling"/>
+      </div>
+      <div className="sidebar-section">
+        <div className="sidebar-label">Coordination</div>
+        <SidebarLink active={view==="tasks"} onClick={()=>setView("tasks")} icon="&#9632;" label="Task Board" count={14}/>
+        <SidebarLink active={view==="pipeline"} onClick={()=>setView("pipeline")} icon="&#9898;" label="Pipeline Status"/>
+      </div>
+    </aside>
+  );
+}
+
+// ============================================================================
+// CLIENT VIEW
+// ============================================================================
+
+function ClientView({view, client, taskDone, setTaskDone, shiftsDone, setShiftsDone}) {
+  if (!client) return <div>Loading...</div>;
+
+  if (view === "dashboard") return <ClientDashboard client={client} shiftsDone={shiftsDone} setShiftsDone={setShiftsDone}/>;
+  if (view === "journey") return <ClientJourney client={client} taskDone={taskDone} setTaskDone={setTaskDone}/>;
+  if (view === "labs") return <ClientLabs client={client}/>;
+  if (view === "protocol") return <ClientProtocol client={client}/>;
+  if (view === "messages") return <ClientMessages client={client}/>;
+  if (view === "appointments") return <ClientAppointments client={client}/>;
+  if (view === "documents") return <ClientDocuments client={client}/>;
+  return null;
+}
+
+function ClientDashboard({client, shiftsDone, setShiftsDone}) {
+  const phases = getPhasesForTrack(client.track);
+  const currentPhase = phases.find(p => p.id === client.currentPhase) || phases[0];
+  const totalDays = client.track === "12-month" ? 380 : 107;
+  const progressPct = Math.min(100, (client.dayOfJourney / totalDays) * 100);
+
+  // Next action: first CL task in current phase not done
+  const clTasks = (TASKS[client.currentPhase] || []).filter(t => t.owner === "CL");
+  const nextTask = clTasks[0];
+
+  const shiftsLabels = [
+    {k:"S", label:"Steps"}, {k:"H", label:"Hydrate"}, {k:"I", label:"Identity"},
+    {k:"F", label:"Fuel"}, {k:"T", label:"Train"}, {k:"Sh", label:"Share"}
+  ];
+
+  const latestDraw = client.draws[client.draws.length - 1];
+  const firstDraw = client.draws[0];
+
+  const quickStats = latestDraw && firstDraw ? [
+    {label:"Total T", val:latestDraw.values["Total Testosterone"], base:firstDraw.values["Total Testosterone"], unit:"ng/dL"},
+    {label:"Free T", val:latestDraw.values["Free Testosterone"], base:firstDraw.values["Free Testosterone"], unit:"pg/mL"},
+    {label:"Vit D", val:latestDraw.values["Vitamin D"], base:firstDraw.values["Vitamin D"], unit:"ng/mL"},
+    {label:"hs-CRP", val:latestDraw.values["hs-CRP"], base:firstDraw.values["hs-CRP"], unit:"mg/L", inverse:true}
+  ] : null;
+
+  return (
+    <div>
+      <div className="page-head">
+        <div className="page-eyebrow">Your Journey</div>
+        <h1 className="page-title">Welcome back, {client.name.split(' ')[0]}.</h1>
+        <p className="page-sub">You're on Day {client.dayOfJourney} of your {client.track === "12-month" ? "12-month" : "12-week"} Elite cycle.</p>
+      </div>
+
+      <div className="hero-progress">
+        <div className="hp-head">
+          <div>
+            <div className="hp-title">Current Phase</div>
+            <div className="hp-phase">Phase {currentPhase.id} · {currentPhase.title}</div>
+            <div className="hp-sub">{currentPhase.when}</div>
+          </div>
+          <div style={{textAlign:"right"}}>
+            <div className="hp-day">Day {client.dayOfJourney}</div>
+            <div className="hp-day-sub">of {totalDays}</div>
+          </div>
+        </div>
+        <div className="hp-bar">
+          <div className="hp-bar-fill" style={{width:`${progressPct}%`}}></div>
+        </div>
+        <div className="hp-labels">
+          <span>Day 1</span>
+          <span>{client.track === "12-month" ? "Q1 Review · Day 100" : "90-Day Retest"}</span>
+          {client.track === "12-month" && <span>Q2 · Day 180</span>}
+          {client.track === "12-month" && <span>Q3 · Day 270</span>}
+          <span>{client.track === "12-month" ? "Annual · Day 370" : "Day 107"}</span>
+        </div>
+      </div>
+
+      {nextTask && (
+        <div className="next-action">
+          <div className="na-eyebrow"><span className="dot"></span>Your Next Action</div>
+          <div className="na-task">{nextTask.task}</div>
+          <div className="na-when">Due {nextTask.dueDay <= client.dayOfJourney ? `today (Day ${nextTask.dueDay})` : `Day ${nextTask.dueDay}`}</div>
+          <div className="na-cta">
+            <button className="btn btn-primary">Mark Complete</button>
+            <button className="btn">Need Help?</button>
+          </div>
+        </div>
+      )}
+
+      <div className="grid-2" style={{marginBottom:20}}>
+        <div className="card">
+          <div className="card-head">
+            <div>
+              <div className="card-title">Today's SHIFTS</div>
+              <div className="card-sub">Steps, Hydrate, Identity, Fuel, Train, Share</div>
+            </div>
+          </div>
+          <div className="shifts-grid">
+            {shiftsLabels.map(s => (
+              <div key={s.k} className={"shift-tile" + (shiftsDone[s.k] ? " done" : "")} onClick={() => setShiftsDone({...shiftsDone, [s.k]: !shiftsDone[s.k]})}>
+                <div className="shift-letter">{s.k}</div>
+                <div className="shift-label">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="card">
+          <div className="card-head">
+            <div>
+              <div className="card-title">Upcoming</div>
+              <div className="card-sub">Next touchpoints</div>
+            </div>
+          </div>
+          <div style={{display:"flex", flexDirection:"column", gap:8}}>
+            <div className="appt-row" style={{marginBottom:0}}>
+              <div className="appt-date"><div className="appt-month">Apr</div><div className="appt-day">24</div></div>
+              <div className="appt-body">
+                <div className="appt-title">Weekly Optimization Call</div>
+                <div className="appt-sub"><span>Wed 12:00 PM PT</span><span>Zoom</span></div>
+              </div>
+            </div>
+            <div className="appt-row" style={{marginBottom:0}}>
+              <div className="appt-date"><div className="appt-month">Apr</div><div className="appt-day">26</div></div>
+              <div className="appt-body">
+                <div className="appt-title">Friday Check-in Due</div>
+                <div className="appt-sub"><span>8:00 AM</span><span>Auto-sent</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {quickStats && (
+        <div className="card" style={{marginBottom:20}}>
+          <div className="card-head">
+            <div>
+              <div className="card-title">Your Key Biomarkers</div>
+              <div className="card-sub">Baseline to latest draw</div>
+            </div>
+            <span className="badge badge-purple"><span className="badge-dot"></span>Last: {latestDraw.label}</span>
+          </div>
+          <div className="grid-4">
+            {quickStats.map(s => {
+              const delta = s.val - s.base;
+              const pct = (delta / s.base) * 100;
+              const goodDirection = s.inverse ? delta < 0 : delta > 0;
+              return (
+                <div key={s.label} className="stat-tile">
+                  <div className="stat-tile-lbl">{s.label}</div>
+                  <div className="stat-tile-val">{s.val} <span style={{fontSize:11, color:"var(--t5)"}}>{s.unit}</span></div>
+                  <div className={"stat-tile-trend " + (goodDirection ? "up" : "down")}>
+                    {delta > 0 ? "↑" : "↓"} {Math.abs(pct).toFixed(0)}% from baseline
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ClientJourney({client, taskDone, setTaskDone}) {
+  const phases = getPhasesForTrack(client.track);
+  const [openPhases, setOpenPhases] = useState(new Set([client.currentPhase]));
+
+  const togglePhase = (id) => {
+    const n = new Set(openPhases);
+    n.has(id) ? n.delete(id) : n.add(id);
+    setOpenPhases(n);
+  };
+
+  const toggleTask = (tid) => setTaskDone({...taskDone, [tid]: !taskDone[tid]});
+
+  return (
+    <div>
+      <div className="page-head">
+        <div className="page-eyebrow">Your Journey · {client.track === "12-month" ? "12-Month Track" : "12-Week Track"}</div>
+        <h1 className="page-title">The {phases.length}-Phase Arc</h1>
+        <p className="page-sub">Every step from Day 0 to {client.track === "12-month" ? "Day 380" : "Day 107"}. Your current phase is highlighted.</p>
+      </div>
+
+      <div className="phase-timeline">
+        {phases.map(phase => {
+          const isCurrent = phase.id === client.currentPhase;
+          const isDone = phase.id < client.currentPhase;
+          const isOpen = openPhases.has(phase.id);
+          const tasks = (TASKS[phase.id] || []).filter(t => t.owner === "CL");  // client only sees their tasks
+          const doneCount = tasks.filter(t => taskDone[t.id]).length;
+          const progress = tasks.length ? doneCount / tasks.length : (isDone ? 1 : 0);
+          const hasTBD = (TASKS[phase.id] || []).some(t => t.tbd);
+
+          return (
+            <div key={phase.id} className={"phase-item" + (isCurrent ? " current" : "") + (isDone ? " done" : "") + (isOpen ? " open" : "")}>
+              <div className="phase-head" onClick={() => togglePhase(phase.id)}>
+                <div className="phase-num">{phase.id}</div>
+                <div className="phase-meta">
+                  <div className="phase-title">{phase.title} {hasTBD && <span className="tbd-chip">TBD</span>}</div>
+                  <div className="phase-when">{phase.when}</div>
+                </div>
+                <div className="phase-status">
+                  {tasks.length > 0 && (
+                    <div className="phase-prog-mini">
+                      <div className="phase-prog-mini-fill" style={{width:`${progress*100}%`}}></div>
+                    </div>
+                  )}
+                  <div className="phase-count">{tasks.length ? `${doneCount}/${tasks.length}` : "-"}</div>
+                  <div className="phase-chev">&#9662;</div>
+                </div>
+              </div>
+              <div className="phase-body">
+                <div className="phase-body-inner">
+                  {(TASKS[phase.id] || []).filter(t => t.owner === "CL").length === 0 ? (
+                    <div style={{padding:"14px 0", color:"var(--t5)", fontSize:13}}>Nothing on your plate in this phase. Your team handles this.</div>
+                  ) : (
+                    (TASKS[phase.id] || []).filter(t => t.owner === "CL").map(t => (
+                      <div key={t.id} className={"task-row" + (taskDone[t.id] ? " done" : "")}>
+                        <div className={"task-check" + (taskDone[t.id] ? " done" : "")} onClick={() => toggleTask(t.id)}></div>
+                        <div className="task-text">
+                          {t.task}
+                          <div className="task-meta">
+                            <span className="task-due">Day {t.dueDay}</span>
+                            {t.tbd && <span className="tbd-chip">TBD</span>}
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function ClientLabs({client}) {
+  const [selectedMarker, setSelectedMarker] = useState(null);
+  const [catFilter, setCatFilter] = useState("all");
+
+  const draws = client.draws;
+  const latestDraw = draws[draws.length - 1];
+
+  if (!draws.length) {
+    return (
+      <div>
+        <div className="page-head">
+          <div className="page-eyebrow">Your Labs</div>
+          <h1 className="page-title">No labs drawn yet</h1>
+          <p className="page-sub">Your baseline panel will appear here after your first draw. Brooke will confirm your appointment this week.</p>
+        </div>
+        <div className="card" style={{textAlign:"center", padding:40}}>
+          <div style={{color:"var(--t4)", fontSize:14}}>Baseline panel pending. Expected draw: Day 7.</div>
+        </div>
+      </div>
+    );
+  }
+
+  const markerEntries = Object.entries(BIOMARKERS).filter(([name, def]) => {
+    if (catFilter !== "all" && def.cat !== catFilter) return false;
+    return latestDraw.values[name] != null;
+  });
+
+  const cats = Array.from(new Set(markerEntries.map(([n, def]) => def.cat)));
+
+  if (selectedMarker) {
+    const def = BIOMARKERS[selectedMarker];
+    const baseVal = draws[0].values[selectedMarker];
+    const currVal = latestDraw.values[selectedMarker];
+    const status = currVal < def.lo ? "low" : currVal > def.hi ? "high" : "optimal";
+
+    return (
+      <div>
+        <div style={{marginBottom:18}}>
+          <button className="btn btn-sm" onClick={() => setSelectedMarker(null)}>← Back to all markers</button>
+        </div>
+        <div className="page-head">
+          <div className="page-eyebrow">{CAT_COLORS[def.cat].label}</div>
+          <h1 className="page-title">{selectedMarker}</h1>
+          <p className="page-sub">{def.desc}</p>
+        </div>
+
+        <div className="card" style={{marginBottom:20}}>
+          <div className="card-head">
+            <div>
+              <div className="card-title">Trend Across Draws</div>
+              <div className="card-sub">Your values over time vs reference range</div>
+            </div>
+            <span className={"badge " + (status==="optimal"?"badge-green":status==="low"?"badge-amber":"badge-red")}>
+              <span className="badge-dot"></span>{status === "optimal" ? "In Range" : status === "low" ? "Below Range" : "Above Range"}
+            </span>
+          </div>
+          <div className="chart-wrap">
+            <BiomarkerChart marker={selectedMarker} draws={draws}/>
+          </div>
+        </div>
+
+        <div className="grid-3">
+          <div className="stat-tile">
+            <div className="stat-tile-lbl">Baseline</div>
+            <div className="stat-tile-val">{baseVal} <span style={{fontSize:11, color:"var(--t5)"}}>{def.unit}</span></div>
+          </div>
+          <div className="stat-tile">
+            <div className="stat-tile-lbl">Current</div>
+            <div className="stat-tile-val" style={{color:"var(--purple3)"}}>{currVal} <span style={{fontSize:11, color:"var(--t5)"}}>{def.unit}</span></div>
+          </div>
+          <div className="stat-tile">
+            <div className="stat-tile-lbl">Reference Range</div>
+            <div className="stat-tile-val" style={{fontSize:16}}>{def.lo} - {def.hi < 999 ? def.hi : "+"} <span style={{fontSize:11, color:"var(--t5)"}}>{def.unit}</span></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <div className="page-head">
+        <div className="page-eyebrow">Your Labs</div>
+        <h1 className="page-title">Your Biomarkers</h1>
+        <p className="page-sub">{draws.length} draw{draws.length>1?"s":""} · Latest: {latestDraw.label} ({latestDraw.date})</p>
+      </div>
+
+      <div className="tab-nav" style={{marginBottom:16}}>
+        <button className={"tab-btn" + (catFilter==="all"?" active":"")} onClick={()=>setCatFilter("all")}>All <span className="count">{Object.keys(BIOMARKERS).filter(m => latestDraw.values[m] != null).length}</span></button>
+        {cats.map(c => (
+          <button key={c} className={"tab-btn" + (catFilter===c?" active":"")} onClick={()=>setCatFilter(c)}>
+            {CAT_COLORS[c].label}
+          </button>
+        ))}
+      </div>
+
+      <div className="marker-grid">
+        {markerEntries.map(([name, def]) => {
+          const curr = latestDraw.values[name];
+          const base = draws[0].values[name];
+          const delta = curr - base;
+          const pct = base !== 0 ? (delta / base) * 100 : 0;
+          const status = curr < def.lo ? "low" : curr > def.hi ? "high" : "optimal";
+          const statusColor = status === "optimal" ? "var(--green)" : status === "low" ? "var(--amber)" : "var(--red)";
+
+          return (
+            <div key={name} className="marker-card" onClick={() => setSelectedMarker(name)}>
+              <div className="marker-name">{name}</div>
+              <div className="marker-cat" style={{color: CAT_COLORS[def.cat].c}}>{CAT_COLORS[def.cat].label}</div>
+              <div className="marker-val-row">
+                <span className="marker-val">{curr}</span>
+                <span className="marker-unit">{def.unit}</span>
+              </div>
+              <div className="marker-status" style={{color:statusColor}}>
+                <span className="badge-dot"></span>{status === "optimal" ? "In Range" : status === "low" ? "Low" : "High"}
+                {draws.length > 1 && (
+                  <span style={{marginLeft:8, color: delta > 0 ? (name === "hs-CRP" || name === "ALT" || name === "AST" || name === "Triglycerides" || name === "LDL" || name === "ApoB" || name === "Homocysteine" ? "var(--red)" : "var(--green)") : (name === "hs-CRP" || name === "ALT" || name === "AST" || name === "Triglycerides" || name === "LDL" || name === "ApoB" || name === "Homocysteine" ? "var(--green)" : "var(--red)")}}>
+                    {delta > 0 ? "↑" : "↓"} {Math.abs(pct).toFixed(0)}%
+                  </span>
+                )}
+              </div>
+              <div className="marker-range">Range: {def.lo} to {def.hi < 999 ? def.hi : "+"}</div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function ClientProtocol({client}) {
+  const protocol = PROTOCOLS[client.id];
+
+  if (!protocol) {
+    return (
+      <div>
+        <div className="page-head">
+          <div className="page-eyebrow">Your Protocol</div>
+          <h1 className="page-title">Protocol pending</h1>
+          <p className="page-sub">Your personalized protocol will be built once your baseline labs process. Typically 2-3 days after draw.</p>
+        </div>
+        <div className="card" style={{textAlign:"center", padding:40, color:"var(--t4)", fontSize:14}}>
+          Awaiting lab results to design protocol.
+        </div>
+      </div>
+    );
+  }
+
+  const statusBadge = (s) => ({
+    active: <span className="badge badge-green"><span className="badge-dot"></span>Active</span>,
+    queued: <span className="badge badge-amber"><span className="badge-dot"></span>Queued</span>,
+    completed: <span className="badge badge-gray"><span className="badge-dot"></span>Completed</span>,
+    paused: <span className="badge badge-gray"><span className="badge-dot"></span>Paused</span>
+  }[s]);
+
+  return (
+    <div>
+      <div className="page-head">
+        <div className="page-eyebrow">Your Protocol</div>
+        <h1 className="page-title">Personalized Protocol</h1>
+        <p className="page-sub">Last updated {protocol.updated} · Built against your labs, symptoms, and goals</p>
+      </div>
+
+      <div className="protocol-section">
+        <div className="protocol-head">
+          <div className="protocol-icon">&#128138;</div>
+          <div>
+            <div className="protocol-title">Peptide Protocol</div>
+            <div className="protocol-sub">Research compounds · NP-reviewed · RUO</div>
+          </div>
+        </div>
+        {protocol.peptides.map((rx, i) => (
+          <div key={i} className="rx-row">
+            <div className="rx-name">{rx.name}{rx.notes && <div style={{fontSize:11, color:"var(--t5)", fontWeight:400, marginTop:2}}>{rx.notes}</div>}</div>
+            <div className="rx-dose">{rx.dose}</div>
+            <div className="rx-schedule">{rx.schedule}</div>
+            <div className="rx-status">{statusBadge(rx.status)}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="protocol-section">
+        <div className="protocol-head">
+          <div className="protocol-icon" style={{background:"rgba(52,211,153,0.12)"}}>&#127807;</div>
+          <div>
+            <div className="protocol-title">Supplement Stack</div>
+            <div className="protocol-sub">Targeted to your specific deficiencies</div>
+          </div>
+        </div>
+        {protocol.supplements.map((rx, i) => (
+          <div key={i} className="rx-row">
+            <div className="rx-name">{rx.name}{rx.notes && <div style={{fontSize:11, color:"var(--t5)", fontWeight:400, marginTop:2}}>{rx.notes}</div>}</div>
+            <div className="rx-dose">{rx.dose}</div>
+            <div className="rx-schedule">{rx.schedule}</div>
+            <div className="rx-status">{statusBadge(rx.status)}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid-3">
+        <div className="card-sm">
+          <div className="card-title" style={{marginBottom:8}}>&#127869; Nutrition</div>
+          <div style={{fontSize:13, color:"var(--t3)", lineHeight:1.6}}>{protocol.nutrition}</div>
+        </div>
+        <div className="card-sm">
+          <div className="card-title" style={{marginBottom:8}}>&#128170; Training</div>
+          <div style={{fontSize:13, color:"var(--t3)", lineHeight:1.6}}>{protocol.training}</div>
+        </div>
+        <div className="card-sm">
+          <div className="card-title" style={{marginBottom:8}}>&#128337; Lifestyle</div>
+          <div style={{fontSize:13, color:"var(--t3)", lineHeight:1.6}}>{protocol.lifestyle}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ClientMessages({client}) {
+  const msgs = MESSAGES[client.id] || [];
+  const [draft, setDraft] = useState("");
+
+  const avatarColor = (from) => ({JS:"var(--purple)", FB:"var(--purple3)", BR:"var(--blue)", CL:"var(--green)"}[from] || "var(--t4)");
+
+  return (
+    <div>
+      <div className="page-head">
+        <div className="page-eyebrow">Messages</div>
+        <h1 className="page-title">Your Team</h1>
+        <p className="page-sub">Direct access to Jay, Fraser, and Brooke</p>
+      </div>
+
+      <div className="card">
+        {msgs.length === 0 ? (
+          <div style={{padding:30, textAlign:"center", color:"var(--t4)"}}>No messages yet. Your team will reach out this week.</div>
+        ) : (
+          msgs.map(m => (
+            <div key={m.id} className="msg-thread">
+              <div className="msg-avatar" style={{background:avatarColor(m.from), color: m.from==="FB"||m.from==="BR"?"var(--bg)":"var(--t1)"}}>{m.from === "CL" ? (client.initials) : m.from}</div>
+              <div className="msg-body">
+                <div className="msg-head">
+                  <span className="msg-name">{m.role}</span>
+                  <span className="msg-time">{m.time}</span>
+                </div>
+                <div className="msg-text">{m.text}</div>
+              </div>
+            </div>
+          ))
+        )}
+
+        <div style={{marginTop:18, display:"flex", gap:10, alignItems:"flex-end"}}>
+          <textarea placeholder="Reply to your team..." value={draft} onChange={e=>setDraft(e.target.value)} style={{flex:1, minHeight:72, background:"var(--bg3)", border:"1px solid var(--border2)", borderRadius:10, padding:12, color:"var(--t2)", fontSize:13.5, resize:"vertical"}}/>
+          <button className="btn btn-primary">Send</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ClientAppointments({client}) {
+  const appts = [
+    {id:"a1", month:"Apr", day:"24", title:"Weekly Optimization Call", sub:["Wed 12:00 PM PT", "Zoom", "Jay Soileau"]},
+    {id:"a2", month:"Apr", day:"26", title:"Friday Check-in (Form)", sub:["8:00 AM", "Auto-sent via SMS"]},
+    {id:"a3", month:"May", day:"1", title:"Fraser Loom Review", sub:["Delivered by 5 PM", "10-min video"]},
+    {id:"a4", month:"May", day:"15", title:"Month 1 Zoom with Fraser", sub:["30 min", "Protocol recalibration"]},
+    {id:"a5", month:"Jun", day:"15", title:"Month 2 Zoom", sub:["30 min", "Q2 retest prep"]},
+    {id:"a6", month:"Jul", day:"15", title:"Q2 Lab Retest", sub:["Local lab draw", "Fasted, AM"]}
+  ];
+
+  return (
+    <div>
+      <div className="page-head">
+        <div className="page-eyebrow">Appointments</div>
+        <h1 className="page-title">Your Schedule</h1>
+        <p className="page-sub">All calls, check-ins, and lab dates</p>
+      </div>
+
+      <div>
+        {appts.map(a => (
+          <div key={a.id} className="appt-row">
+            <div className="appt-date"><div className="appt-month">{a.month}</div><div className="appt-day">{a.day}</div></div>
+            <div className="appt-body">
+              <div className="appt-title">{a.title}</div>
+              <div className="appt-sub">{a.sub.map((s, i) => <span key={i}>{s}</span>)}</div>
+            </div>
+            <button className="btn btn-sm">Details</button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ClientDocuments({client}) {
+  const docs = [
+    {name:"Onboarding Intake Form", type:"PDF", date:"Jan 17, 2026", status:"signed"},
+    {name:"NP Consultation Consent", type:"PDF", date:"Jan 18, 2026", status:"signed"},
+    {name:"RUO Research Compound Acknowledgment", type:"PDF", date:"Jan 18, 2026", status:"signed"},
+    {name:"Baseline Lab Results", type:"PDF", date:"Jan 22, 2026", status:"available"},
+    {name:"Q1 Protocol Document", type:"PDF", date:"Jan 25, 2026", status:"available"},
+    {name:"Q1 Retest Lab Results", type:"PDF", date:"Apr 15, 2026", status:"available"},
+    {name:"Fraser's Baseline Lab Review (Loom)", type:"Video", date:"Jan 26, 2026", status:"available"},
+    {name:"Fraser's Q1 Retest Review (Loom)", type:"Video", date:"Apr 16, 2026", status:"available"}
+  ];
+
+  return (
+    <div>
+      <div className="page-head">
+        <div className="page-eyebrow">Documents</div>
+        <h1 className="page-title">Your Records</h1>
+        <p className="page-sub">Every form, result, and review video in one place</p>
+      </div>
+
+      <div className="card">
+        {docs.map((d, i) => (
+          <div key={i} style={{display:"flex", alignItems:"center", gap:14, padding:"12px 0", borderBottom:i<docs.length-1?"1px solid var(--border)":"none"}}>
+            <div style={{width:36, height:36, borderRadius:9, background:"var(--bg3)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:14, color:d.type==="Video"?"var(--purple3)":"var(--t4)"}}>
+              {d.type === "Video" ? "▶" : "◈"}
+            </div>
+            <div style={{flex:1, minWidth:0}}>
+              <div style={{fontSize:13.5, fontWeight:600, color:"var(--t1)", marginBottom:2}}>{d.name}</div>
+              <div style={{fontSize:11, color:"var(--t4)", fontFamily:"var(--mono)"}}>{d.type} · {d.date}</div>
+            </div>
+            <span className={"badge " + (d.status === "signed" ? "badge-green" : "badge-purple")}><span className="badge-dot"></span>{d.status}</span>
+            <button className="btn btn-sm">Open</button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ============================================================================
+// COACH VIEW (Jay)
+// ============================================================================
+
+function CoachView({view, activeClientId, setActiveClientId, taskDone, setTaskDone}) {
+  if (view === "roster") return <CoachRoster setActiveClientId={setActiveClientId} activeClientId={activeClientId}/>;
+  if (view === "today") return <CoachToday/>;
+  if (view === "calls") return <CoachCalls/>;
+  if (view === "client-detail") return <CoachClientDetail clientId={activeClientId} setActiveClientId={setActiveClientId} taskDone={taskDone} setTaskDone={setTaskDone}/>;
+  if (view === "messages-all") return <CoachAllMessages/>;
+  if (view === "pipeline") return <CoachPipeline/>;
+  return null;
+}
+
+function CoachRoster({setActiveClientId, activeClientId}) {
+  const [filter, setFilter] = useState("all");
+  const filtered = CLIENTS.filter(c => {
+    if (filter === "12-week") return c.track === "12-week";
+    if (filter === "12-month") return c.track === "12-month";
+    if (filter === "attention") {
+      const phases = getPhasesForTrack(c.track);
+      const totalDays = c.track === "12-month" ? 380 : 107;
+      return c.dayOfJourney < 30 || c.dayOfJourney > totalDays - 20;
+    }
+    return true;
+  });
+
+  return (
+    <div>
+      <div className="page-head">
+        <div className="page-eyebrow">Coach View</div>
+        <h1 className="page-title">Client Roster</h1>
+        <p className="page-sub">{CLIENTS.length} active clients · {CLIENTS.filter(c=>c.track==="12-month").length} on 12-month · {CLIENTS.filter(c=>c.track==="12-week").length} on 12-week</p>
+      </div>
+
+      <div className="tab-nav" style={{marginBottom:14}}>
+        <button className={"tab-btn"+(filter==="all"?" active":"")} onClick={()=>setFilter("all")}>All <span className="count">{CLIENTS.length}</span></button>
+        <button className={"tab-btn"+(filter==="12-week"?" active":"")} onClick={()=>setFilter("12-week")}>12-Week <span className="count">{CLIENTS.filter(c=>c.track==="12-week").length}</span></button>
+        <button className={"tab-btn"+(filter==="12-month"?" active":"")} onClick={()=>setFilter("12-month")}>12-Month <span className="count">{CLIENTS.filter(c=>c.track==="12-month").length}</span></button>
+        <button className={"tab-btn"+(filter==="attention"?" active":"")} onClick={()=>setFilter("attention")}>Needs Attention</button>
+      </div>
+
+      <div>
+        {filtered.map(c => {
+          const phases = getPhasesForTrack(c.track);
+          const phase = phases.find(p => p.id === c.currentPhase);
+          const totalDays = c.track === "12-month" ? 380 : 107;
+          const progressPct = Math.min(100, (c.dayOfJourney / totalDays) * 100);
+          return (
+            <div key={c.id} className={"client-row" + (c.id === activeClientId ? " selected" : "")} onClick={() => setActiveClientId(c.id)}>
+              <div className="client-avatar">{c.initials}</div>
+              <div className="client-meta">
+                <div className="client-name">{c.name}</div>
+                <div className="client-sub">
+                  <span>{c.track === "12-month" ? "12-Month" : "12-Week"}</span>
+                  <span>Phase {phase?.id} · {phase?.title}</span>
+                  <span>Day {c.dayOfJourney}</span>
+                  <span>{c.draws.length} draw{c.draws.length !== 1 ? "s" : ""}</span>
+                </div>
+              </div>
+              <div className="client-prog">
+                <div className="client-prog-pct">{progressPct.toFixed(0)}%</div>
+                <div className="client-prog-label">Progress</div>
+              </div>
+              <button className="btn btn-sm">Open</button>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function CoachToday() {
+  const today = [
+    {client:"Marcus Reeves", task:"Host Weekly Optimization Call", due:"12:00 PM PT", priority:"high"},
+    {client:"Marcus Reeves", task:"Respond to Voxer question re: BPC timing", due:"Today", priority:"med"},
+    {client:"Jessica Park", task:"Lead kickoff call", due:"2:00 PM PT", priority:"high"},
+    {client:"Anthony Rivera", task:"Annual review prep: pull Q1-Q4 data", due:"Today", priority:"high"},
+    {client:"Daniel Chen", task:"Q3 review call prep", due:"Tomorrow", priority:"med"},
+    {client:"Sarah Hayes", task:"Introduce Program Ambassador", due:"Today", priority:"low"},
+    {client:"Marcus Reeves", task:"Plant renewal conversation on Q3 call", due:"End of week", priority:"med"}
+  ];
+
+  return (
+    <div>
+      <div className="page-head">
+        <div className="page-eyebrow">Coach View</div>
+        <h1 className="page-title">Today's Focus</h1>
+        <p className="page-sub">Every client task assigned to you, in priority order</p>
+      </div>
+
+      <div>
+        {today.map((t, i) => (
+          <div key={i} className="card" style={{padding:"14px 18px", marginBottom:8, display:"flex", alignItems:"center", gap:14}}>
+            <div className={"flag-severity " + (t.priority==="high"?"critical":t.priority==="med"?"warning":"")} style={{background:t.priority==="low"?"var(--bg3)":""}}>
+              {t.priority === "high" ? "!" : t.priority === "med" ? "•" : "○"}
+            </div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:13.5, fontWeight:600, color:"var(--t1)", marginBottom:3}}>{t.task}</div>
+              <div style={{fontSize:11.5, color:"var(--t4)", fontFamily:"var(--mono)"}}>{t.client} · Due {t.due}</div>
+            </div>
+            <button className="btn btn-sm">Open Client</button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function CoachCalls() {
+  const calls = [
+    {date:"Apr 24", time:"12:00 PM PT", title:"Weekly Optimization Call (Group)", attendees:"4 active clients", type:"group"},
+    {date:"Apr 24", time:"2:00 PM PT", title:"Jessica Park - Kickoff Call", attendees:"1:1", type:"kickoff"},
+    {date:"Apr 25", time:"10:00 AM PT", title:"Daniel Chen - Q3 Review Call", attendees:"1:1 + Fraser", type:"review"},
+    {date:"Apr 26", time:"3:00 PM PT", title:"Anthony Rivera - Annual Review", attendees:"1:1 + Fraser", type:"review"}
+  ];
+
+  return (
+    <div>
+      <div className="page-head">
+        <div className="page-eyebrow">Coach View</div>
+        <h1 className="page-title">Calls This Week</h1>
+        <p className="page-sub">4 scheduled · 1 kickoff, 2 reviews, 1 group</p>
+      </div>
+
+      <div>
+        {calls.map((c, i) => (
+          <div key={i} className="appt-row">
+            <div className="appt-date"><div className="appt-month">{c.date.split(' ')[0]}</div><div className="appt-day">{c.date.split(' ')[1]}</div></div>
+            <div className="appt-body">
+              <div className="appt-title">{c.title}</div>
+              <div className="appt-sub"><span>{c.time}</span><span>{c.attendees}</span></div>
+            </div>
+            <span className={"badge " + (c.type==="kickoff"?"badge-purple":c.type==="review"?"badge-amber":"badge-gray")}><span className="badge-dot"></span>{c.type}</span>
+            <button className="btn btn-sm">Prep Notes</button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function CoachClientDetail({clientId, setActiveClientId, taskDone, setTaskDone}) {
+  const [tab, setTab] = useState("journey");
+  const [openPhases, setOpenPhases] = useState(new Set());
+  const client = CLIENTS.find(c => c.id === clientId);
+  if (!client) return null;
+
+  const phases = getPhasesForTrack(client.track);
+  const totalDays = client.track === "12-month" ? 380 : 107;
+
+  const togglePhase = (id) => {
+    const n = new Set(openPhases);
+    n.has(id) ? n.delete(id) : n.add(id);
+    setOpenPhases(n);
+  };
+  const toggleTask = (tid) => setTaskDone({...taskDone, [tid]: !taskDone[tid]});
+
+  return (
+    <div>
+      <div className="page-head">
+        <div className="page-eyebrow">Coach View · Client Deep-Dive</div>
+        <h1 className="page-title">{client.name}</h1>
+        <p className="page-sub">{client.age}y {client.sex} · {client.track === "12-month" ? "12-Month" : "12-Week"} Elite · Day {client.dayOfJourney} of {totalDays} · Goals: {client.goals}</p>
+      </div>
+
+      <div style={{marginBottom:14, display:"flex", gap:8, flexWrap:"wrap"}}>
+        {CLIENTS.map(c => (
+          <button key={c.id} className={"btn btn-sm"+(c.id===clientId?" btn-primary":"")} onClick={()=>setActiveClientId(c.id)}>{c.initials} {c.name.split(' ')[0]}</button>
+        ))}
+      </div>
+
+      <div className="tab-nav">
+        <button className={"tab-btn"+(tab==="journey"?" active":"")} onClick={()=>setTab("journey")}>Journey Tracker</button>
+        <button className={"tab-btn"+(tab==="labs"?" active":"")} onClick={()=>setTab("labs")}>Labs</button>
+        <button className={"tab-btn"+(tab==="protocol"?" active":"")} onClick={()=>setTab("protocol")}>Protocol</button>
+        <button className={"tab-btn"+(tab==="notes"?" active":"")} onClick={()=>setTab("notes")}>Notes</button>
+      </div>
+
+      {tab === "journey" && (
+        <div className="phase-timeline">
+          {phases.map(phase => {
+            const isCurrent = phase.id === client.currentPhase;
+            const isDone = phase.id < client.currentPhase;
+            const isOpen = openPhases.has(phase.id);
+            const tasks = TASKS[phase.id] || [];
+            const doneCount = tasks.filter(t => taskDone[t.id]).length;
+            const progress = tasks.length ? doneCount / tasks.length : (isDone ? 1 : 0);
+            const hasTBD = tasks.some(t => t.tbd);
+
+            return (
+              <div key={phase.id} className={"phase-item" + (isCurrent ? " current" : "") + (isDone ? " done" : "") + (isOpen ? " open" : "")}>
+                <div className="phase-head" onClick={() => togglePhase(phase.id)}>
+                  <div className="phase-num">{phase.id}</div>
+                  <div className="phase-meta">
+                    <div className="phase-title">{phase.title} {hasTBD && <span className="tbd-chip">TBD</span>}</div>
+                    <div className="phase-when">{phase.when}</div>
+                  </div>
+                  <div className="phase-status">
+                    <div className="phase-prog-mini"><div className="phase-prog-mini-fill" style={{width:`${progress*100}%`}}></div></div>
+                    <div className="phase-count">{doneCount}/{tasks.length}</div>
+                    <div className="phase-chev">&#9662;</div>
+                  </div>
+                </div>
+                <div className="phase-body">
+                  <div className="phase-body-inner">
+                    {tasks.map(t => (
+                      <div key={t.id} className={"task-row" + (taskDone[t.id] ? " done" : "")}>
+                        <div className={"task-check" + (taskDone[t.id] ? " done" : "")} onClick={() => toggleTask(t.id)}></div>
+                        <div className="task-text">
+                          {t.task}
+                          <div className="task-meta">
+                            <span className={"pill pill-role-"+t.owner}>{ROLE_SHORT[t.owner]}</span>
+                            <span className="task-due">Day {t.dueDay}</span>
+                            {t.tbd && <span className="tbd-chip">TBD: {t.tbd}</span>}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {tab === "labs" && <CoachClientLabs client={client}/>}
+      {tab === "protocol" && <CoachClientProtocol client={client}/>}
+      {tab === "notes" && <CoachClientNotes client={client}/>}
+    </div>
+  );
+}
+
+function CoachClientLabs({client}) {
+  if (!client.draws.length) return <div className="card" style={{textAlign:"center", padding:40, color:"var(--t4)"}}>No labs drawn yet.</div>;
+  const latest = client.draws[client.draws.length - 1];
+  const markers = Object.keys(BIOMARKERS).filter(m => latest.values[m] != null);
+  return (
+    <div className="marker-grid">
+      {markers.map(m => {
+        const def = BIOMARKERS[m];
+        const curr = latest.values[m];
+        const base = client.draws[0].values[m];
+        const status = curr < def.lo ? "low" : curr > def.hi ? "high" : "optimal";
+        const statusColor = status === "optimal" ? "var(--green)" : status === "low" ? "var(--amber)" : "var(--red)";
+        return (
+          <div key={m} className="marker-card">
+            <div className="marker-name">{m}</div>
+            <div className="marker-cat" style={{color: CAT_COLORS[def.cat].c}}>{CAT_COLORS[def.cat].label}</div>
+            <div className="marker-val-row">
+              <span className="marker-val">{curr}</span>
+              <span className="marker-unit">{def.unit}</span>
+              {base !== curr && <span style={{fontSize:10, color:"var(--t5)", fontFamily:"var(--mono)"}}>(from {base})</span>}
+            </div>
+            <div className="marker-status" style={{color:statusColor}}>
+              <span className="badge-dot"></span>{status === "optimal" ? "In Range" : status === "low" ? "Low" : "High"}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function CoachClientProtocol({client}) {
+  const protocol = PROTOCOLS[client.id];
+  if (!protocol) return <div className="card" style={{textAlign:"center", padding:40, color:"var(--t4)"}}>No protocol yet.</div>;
+  const statusBadge = (s) => ({active:<span className="badge badge-green"><span className="badge-dot"></span>Active</span>, queued:<span className="badge badge-amber"><span className="badge-dot"></span>Queued</span>, completed:<span className="badge badge-gray"><span className="badge-dot"></span>Done</span>})[s];
+  return (
+    <div>
+      <div className="protocol-section">
+        <div className="protocol-head"><div className="protocol-icon">&#128138;</div><div><div className="protocol-title">Peptides</div></div></div>
+        {protocol.peptides.map((rx, i) => (<div key={i} className="rx-row"><div className="rx-name">{rx.name}</div><div className="rx-dose">{rx.dose}</div><div className="rx-schedule">{rx.schedule}</div><div className="rx-status">{statusBadge(rx.status)}</div></div>))}
+      </div>
+      <div className="protocol-section">
+        <div className="protocol-head"><div className="protocol-icon" style={{background:"rgba(52,211,153,0.12)"}}>&#127807;</div><div><div className="protocol-title">Supplements</div></div></div>
+        {protocol.supplements.map((rx, i) => (<div key={i} className="rx-row"><div className="rx-name">{rx.name}</div><div className="rx-dose">{rx.dose}</div><div className="rx-schedule">{rx.schedule}</div><div className="rx-status">{statusBadge(rx.status)}</div></div>))}
+      </div>
+    </div>
+  );
+}
+
+function CoachClientNotes({client}) {
+  const notes = [
+    {time:"Today, 9:40 AM", user:"Jay", text:"Marcus responded well to the pulling-day addition. Sleep numbers stacking. Keep course."},
+    {time:"Yesterday, 4:15 PM", user:"Fraser", text:"Q1 to Q2 trend excellent. Free T up 12%, hs-CRP down further, insulin sensitivity clearly improved. Protocol staying same for now."},
+    {time:"Apr 10, 2026, 11:00 AM", user:"Brooke", text:"Q2 lab draw scheduled for Jul 15. Confirmed with client via SMS."},
+    {time:"Mar 28, 2026, 5:20 PM", user:"Jay", text:"Client self-reported steady energy week over week. Moving out of adaptation phase into consolidation."}
+  ];
+
+  return (
+    <div className="card">
+      {notes.map((n, i) => (
+        <div key={i} style={{padding:"14px 0", borderBottom:i<notes.length-1?"1px solid var(--border)":"none"}}>
+          <div style={{display:"flex", alignItems:"baseline", gap:10, marginBottom:6}}>
+            <span style={{fontSize:13, fontWeight:600, color:"var(--t1)"}}>{n.user}</span>
+            <span style={{fontSize:11, color:"var(--t5)", fontFamily:"var(--mono)"}}>{n.time}</span>
+          </div>
+          <div style={{fontSize:13.5, color:"var(--t3)", lineHeight:1.6}}>{n.text}</div>
+        </div>
+      ))}
+      <div style={{marginTop:14, display:"flex", gap:10}}>
+        <textarea placeholder="Add internal note..." style={{flex:1, minHeight:64, background:"var(--bg3)", border:"1px solid var(--border2)", borderRadius:10, padding:12, color:"var(--t2)", fontSize:13.5}}/>
+        <button className="btn btn-primary">Post Note</button>
+      </div>
+    </div>
+  );
+}
+
+function CoachAllMessages() {
+  const threads = [
+    {client:"Marcus Reeves", preview:"Morning is fine. What matters is consistency more than timing...", time:"Today 10:22", unread:0},
+    {client:"Sarah Hayes", preview:"Your Program Ambassador is Lisa. She'll be in touch this week.", time:"Yesterday 2:30", unread:2},
+    {client:"Daniel Chen", preview:"Q2 results are phenomenal. ApoB down 10 points, hs-CRP under 1.0...", time:"Today 8:30", unread:1},
+    {client:"Jessica Park", preview:"Welcome! Kickoff call scheduled for tomorrow at 2 PM.", time:"Apr 20", unread:0},
+    {client:"Anthony Rivera", preview:"Annual review prep underway. Pulling all 4 quarters of data.", time:"Apr 18", unread:0}
+  ];
+
+  return (
+    <div>
+      <div className="page-head">
+        <div className="page-eyebrow">Coach View</div>
+        <h1 className="page-title">All Messages</h1>
+        <p className="page-sub">Active threads across all clients</p>
+      </div>
+      <div>
+        {threads.map((t, i) => (
+          <div key={i} className="card" style={{padding:"14px 18px", marginBottom:8, display:"flex", alignItems:"center", gap:14}}>
+            <div className="msg-avatar" style={{background:"var(--purple)", width:40, height:40, fontSize:13}}>{t.client.split(' ').map(n=>n[0]).join('')}</div>
+            <div style={{flex:1, minWidth:0}}>
+              <div style={{display:"flex", alignItems:"baseline", gap:10, marginBottom:3}}>
+                <span style={{fontSize:13.5, fontWeight:600, color:"var(--t1)"}}>{t.client}</span>
+                <span style={{fontSize:10.5, color:"var(--t5)", fontFamily:"var(--mono)"}}>{t.time}</span>
+              </div>
+              <div style={{fontSize:12.5, color:"var(--t4)", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap"}}>{t.preview}</div>
+            </div>
+            {t.unread > 0 && <span className="badge badge-purple"><span className="badge-dot"></span>{t.unread} new</span>}
+            <button className="btn btn-sm">Open</button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function CoachPipeline() {
+  const stages = [
+    {name:"Discovery Call Booked", count:3, color:"var(--t4)"},
+    {name:"Enrolled", count:1, color:"var(--blue)"},
+    {name:"Awaiting Labs", count:1, color:"var(--amber)"},
+    {name:"Protocol Phase", count:1, color:"var(--purple3)"},
+    {name:"Weekly Rhythm", count:2, color:"var(--green)"},
+    {name:"Q1/Q2/Q3 Review", count:1, color:"var(--purple)"},
+    {name:"Annual / Renewal", count:1, color:"var(--purple)"}
+  ];
+
+  return (
+    <div>
+      <div className="page-head">
+        <div className="page-eyebrow">Coach View</div>
+        <h1 className="page-title">Pipeline Status</h1>
+        <p className="page-sub">Every client bucketed by journey stage</p>
+      </div>
+      <div className="grid-4">
+        {stages.map((s, i) => (
+          <div key={i} className="card" style={{padding:18}}>
+            <div style={{fontSize:10.5, fontWeight:600, color:"var(--t4)", letterSpacing:"0.12em", textTransform:"uppercase", marginBottom:8, fontFamily:"var(--mono)"}}>{s.name}</div>
+            <div style={{fontFamily:"var(--mono)", fontWeight:600, fontSize:28, color:s.color, letterSpacing:"-0.025em"}}>{s.count}</div>
+            <div style={{fontSize:11, color:"var(--t5)", fontFamily:"var(--mono)", marginTop:3}}>clients</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ============================================================================
+// PROVIDER VIEW (Fraser)
+// ============================================================================
+
+function ProviderView({view, activeClientId, setActiveClientId}) {
+  if (view === "review-queue") return <ProviderReviewQueue setActiveClientId={setActiveClientId}/>;
+  if (view === "flags") return <ProviderFlags/>;
+  if (view === "lab-library") return <ProviderLabLibrary/>;
+  if (view === "protocol-editor") return <ProviderProtocolEditor clientId={activeClientId} setActiveClientId={setActiveClientId}/>;
+  if (view === "loom-queue") return <ProviderLoomQueue/>;
+  return null;
+}
+
+function ProviderReviewQueue({setActiveClientId}) {
+  const queue = [
+    {clientId:"cl-2", client:"Sarah Hayes", event:"Baseline lab results uploaded", time:"2 hours ago", urgency:"high", flags:3},
+    {clientId:"cl-3", client:"Daniel Chen", event:"Q2 lab results uploaded - protocol pivot required", time:"Yesterday", urgency:"med", flags:1},
+    {clientId:"cl-5", client:"Anthony Rivera", event:"Q3 to annual review prep", time:"Yesterday", urgency:"med", flags:0}
+  ];
+
+  return (
+    <div>
+      <div className="page-head">
+        <div className="page-eyebrow">Provider Console</div>
+        <h1 className="page-title">Review Queue</h1>
+        <p className="page-sub">Labs, protocol pivots, and flagged cases awaiting review</p>
+      </div>
+
+      <TBDBanner type="pivot-authority"/>
+
+      <div>
+        {queue.map((q, i) => (
+          <div key={i} className="card" style={{padding:"16px 18px", marginBottom:10, display:"flex", alignItems:"center", gap:14}}>
+            <div className={"flag-severity " + (q.urgency==="high"?"critical":"warning")}>{q.urgency==="high" ? "!" : "•"}</div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:13.5, fontWeight:600, color:"var(--t1)", marginBottom:3}}>{q.client}</div>
+              <div style={{fontSize:12.5, color:"var(--t4)"}}>{q.event}</div>
+              <div style={{fontSize:11, color:"var(--t5)", fontFamily:"var(--mono)", marginTop:3}}>{q.time} · {q.flags} flag{q.flags!==1?"s":""}</div>
+            </div>
+            <button className="btn btn-primary btn-sm" onClick={()=>setActiveClientId(q.clientId)}>Review</button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ProviderFlags() {
+  const flags = [
+    {client:"Sarah Hayes", marker:"Vitamin D", val:"18 ng/mL", severity:"critical", detail:"Severely deficient. Recommend 10K IU with K2 daily, retest Q1."},
+    {client:"Sarah Hayes", marker:"Ferritin", val:"28 ng/mL", severity:"critical", detail:"Iron storage low. May affect thyroid and energy. Supplement and retest."},
+    {client:"Sarah Hayes", marker:"Cortisol AM", val:"22.5 ug/dL", severity:"critical", detail:"Elevated morning cortisol. Stress/HPA pattern. Adaptogenic support indicated."},
+    {client:"Daniel Chen", marker:"Hematocrit", val:"47.5%", severity:"warning", detail:"Approaching upper limit. Monitor; consider hydration, donation if continues trending up."},
+    {client:"Marcus Reeves", marker:"ALT (resolved)", val:"32 IU/L", severity:"info", detail:"Previously flagged 48. Now in range. Protocol working."},
+    {client:"Anthony Rivera", marker:"Hematocrit", val:"50.1%", severity:"warning", detail:"Upper bound. Consider phlebotomy or protocol adjustment."}
+  ];
+
+  return (
+    <div>
+      <div className="page-head">
+        <div className="page-eyebrow">Provider Console</div>
+        <h1 className="page-title">Active Flags</h1>
+        <p className="page-sub">Every marker outside range across all clients</p>
+      </div>
+      <div>
+        {flags.map((f, i) => (
+          <div key={i} className={"flag-item " + f.severity}>
+            <div className={"flag-severity " + f.severity}>{f.severity==="critical"?"!":f.severity==="warning"?"•":"✓"}</div>
+            <div className="flag-body">
+              <div className="flag-title">{f.client} · {f.marker} · <span style={{fontFamily:"var(--mono)", fontWeight:500}}>{f.val}</span></div>
+              <div className="flag-detail">{f.detail}</div>
+            </div>
+            <div className="flag-meta">
+              <span className={"badge " + (f.severity==="critical"?"badge-red":f.severity==="warning"?"badge-amber":"badge-gray")}><span className="badge-dot"></span>{f.severity}</span>
+              <button className="btn btn-sm">Review</button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ProviderLabLibrary() {
+  const withDraws = CLIENTS.filter(c => c.draws.length > 0);
+  return (
+    <div>
+      <div className="page-head">
+        <div className="page-eyebrow">Provider Console</div>
+        <h1 className="page-title">Lab Library</h1>
+        <p className="page-sub">Every draw across every client. Trend and cross-reference.</p>
+      </div>
+      <div>
+        {withDraws.map(c => c.draws.map(d => (
+          <div key={c.id+d.id} className="card" style={{padding:"14px 18px", marginBottom:8, display:"flex", alignItems:"center", gap:14}}>
+            <div className="client-avatar" style={{background:"var(--purple)"}}>{c.initials}</div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:13.5, fontWeight:600, color:"var(--t1)"}}>{c.name} · {d.label}</div>
+              <div style={{fontSize:11.5, color:"var(--t4)", fontFamily:"var(--mono)"}}>{d.date} · {Object.keys(d.values).length} markers · Day {d.day}</div>
+            </div>
+            <button className="btn btn-sm">Open Panel</button>
+          </div>
+        )))}
+      </div>
+    </div>
+  );
+}
+
+function ProviderProtocolEditor({clientId, setActiveClientId}) {
+  const client = CLIENTS.find(c => c.id === clientId);
+  const protocol = PROTOCOLS[clientId];
+
+  return (
+    <div>
+      <div className="page-head">
+        <div className="page-eyebrow">Provider Console · Protocol Editor</div>
+        <h1 className="page-title">{client?.name || "Select client"}</h1>
+        <p className="page-sub">Edit peptides, supplements, lifestyle inputs. Changes sync to client portal.</p>
+      </div>
+
+      <div style={{marginBottom:14, display:"flex", gap:8, flexWrap:"wrap"}}>
+        {CLIENTS.filter(c => PROTOCOLS[c.id]).map(c => (
+          <button key={c.id} className={"btn btn-sm"+(c.id===clientId?" btn-primary":"")} onClick={()=>setActiveClientId(c.id)}>{c.initials} {c.name.split(' ')[0]}</button>
+        ))}
+      </div>
+
+      <TBDBanner type="peptide-cycles"/>
+
+      {!protocol ? (
+        <div className="card" style={{textAlign:"center", padding:40, color:"var(--t4)"}}>No protocol for this client yet. Select a client above.</div>
+      ) : (
+        <div>
+          <div className="card" style={{marginBottom:14}}>
+            <div className="card-head">
+              <div>
+                <div className="card-title">Peptide Stack</div>
+                <div className="card-sub">Last updated {protocol.updated}</div>
+              </div>
+              <button className="btn btn-sm">+ Add Peptide</button>
+            </div>
+            {protocol.peptides.map((rx, i) => (
+              <div key={i} className="rx-row">
+                <div className="rx-name">{rx.name}</div>
+                <div className="rx-dose">{rx.dose}</div>
+                <div className="rx-schedule">{rx.schedule}</div>
+                <div style={{display:"flex", gap:6}}>
+                  <button className="btn btn-sm">Edit</button>
+                  <button className="btn btn-sm" style={{color:"var(--red)"}}>×</button>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="card">
+            <div className="card-head">
+              <div>
+                <div className="card-title">Supplement Stack</div>
+              </div>
+              <button className="btn btn-sm">+ Add Supplement</button>
+            </div>
+            {protocol.supplements.map((rx, i) => (
+              <div key={i} className="rx-row">
+                <div className="rx-name">{rx.name}</div>
+                <div className="rx-dose">{rx.dose}</div>
+                <div className="rx-schedule">{rx.schedule}</div>
+                <div style={{display:"flex", gap:6}}>
+                  <button className="btn btn-sm">Edit</button>
+                  <button className="btn btn-sm" style={{color:"var(--red)"}}>×</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ProviderLoomQueue() {
+  const queue = [
+    {client:"Marcus Reeves", event:"Weekly check-in (Fri)", due:"Today 5 PM", status:"pending"},
+    {client:"Sarah Hayes", event:"Baseline lab review Loom", due:"Today 5 PM", status:"pending"},
+    {client:"Daniel Chen", event:"Q2 lab review Loom", due:"Tomorrow 5 PM", status:"pending"}
+  ];
+  return (
+    <div>
+      <div className="page-head">
+        <div className="page-eyebrow">Provider Console</div>
+        <h1 className="page-title">Loom Queue</h1>
+        <p className="page-sub">Weekly check-ins and lab reviews to record</p>
+      </div>
+      <div>
+        {queue.map((q, i) => (
+          <div key={i} className="card" style={{padding:"14px 18px", marginBottom:8, display:"flex", alignItems:"center", gap:14}}>
+            <div style={{fontSize:18, width:36, height:36, borderRadius:9, background:"rgba(199,137,194,0.15)", color:"var(--purple3)", display:"flex", alignItems:"center", justifyContent:"center"}}>▶</div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:13.5, fontWeight:600, color:"var(--t1)", marginBottom:2}}>{q.event} · {q.client}</div>
+              <div style={{fontSize:11.5, color:"var(--t4)", fontFamily:"var(--mono)"}}>Due {q.due}</div>
+            </div>
+            <button className="btn btn-primary btn-sm">Record</button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ============================================================================
+// ADMIN VIEW (Brooke)
+// ============================================================================
+
+function AdminView({view}) {
+  if (view === "operations") return <AdminOperations/>;
+  if (view === "onboarding") return <AdminOnboarding/>;
+  if (view === "schedule") return <AdminSchedule/>;
+  if (view === "tasks") return <AdminTasks/>;
+  if (view === "pipeline") return <AdminPipeline/>;
+  return null;
+}
+
+function AdminOperations() {
+  return (
+    <div>
+      <div className="page-head">
+        <div className="page-eyebrow">Operations</div>
+        <h1 className="page-title">All Clients</h1>
+        <p className="page-sub">Roster view · status, next touchpoints, action items</p>
+      </div>
+
+      <div className="grid-4" style={{marginBottom:18}}>
+        <div className="stat-tile"><div className="stat-tile-lbl">Active Clients</div><div className="stat-tile-val">5</div></div>
+        <div className="stat-tile"><div className="stat-tile-lbl">Needs Action Today</div><div className="stat-tile-val" style={{color:"var(--amber)"}}>7</div></div>
+        <div className="stat-tile"><div className="stat-tile-lbl">Upcoming Draws</div><div className="stat-tile-val" style={{color:"var(--purple3)"}}>3</div></div>
+        <div className="stat-tile"><div className="stat-tile-lbl">New This Month</div><div className="stat-tile-val" style={{color:"var(--green)"}}>1</div></div>
+      </div>
+
+      <div>
+        {CLIENTS.map(c => {
+          const phases = getPhasesForTrack(c.track);
+          const phase = phases.find(p => p.id === c.currentPhase);
+          return (
+            <div key={c.id} className="client-row">
+              <div className="client-avatar">{c.initials}</div>
+              <div className="client-meta">
+                <div className="client-name">{c.name}</div>
+                <div className="client-sub">
+                  <span>{c.track}</span>
+                  <span>P{phase?.id} · {phase?.title}</span>
+                  <span>Day {c.dayOfJourney}</span>
+                  <span>{c.email}</span>
+                </div>
+              </div>
+              <button className="btn btn-sm">Manage</button>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function AdminOnboarding() {
+  return (
+    <div>
+      <div className="page-head">
+        <div className="page-eyebrow">Operations</div>
+        <h1 className="page-title">New Client Onboarding</h1>
+        <p className="page-sub">Clients currently in Phase 1-3</p>
+      </div>
+
+      <div className="card">
+        <div className="client-row">
+          <div className="client-avatar">JP</div>
+          <div className="client-meta">
+            <div className="client-name">Jessica Park</div>
+            <div className="client-sub">
+              <span>12-Week</span>
+              <span>Phase 2 · Golden 48 Hours</span>
+              <span>Day 18</span>
+            </div>
+          </div>
+          <span className="badge badge-amber"><span className="badge-dot"></span>Kickoff Today</span>
+        </div>
+
+        <div style={{marginTop:16}}>
+          <div style={{fontSize:13, fontWeight:600, color:"var(--t1)", marginBottom:10}}>Onboarding Checklist</div>
+          {[
+            {task:"Read discovery call notes in GHL", done:true},
+            {task:"Add client to Circle · Elite Optimization space", done:true},
+            {task:"Send personal DM (not templated)", done:true},
+            {task:"Confirm welcome-email homework completion", done:true},
+            {task:"Follow up on incomplete homework", done:false, flag:"blocking"},
+            {task:"Confirm kickoff call scheduled", done:false}
+          ].map((t, i) => (
+            <div key={i} className={"task-row" + (t.done?" done":"")}>
+              <div className={"task-check" + (t.done?" done":"")}></div>
+              <div className="task-text">{t.task} {t.flag && <span className="badge badge-red" style={{marginLeft:8}}><span className="badge-dot"></span>{t.flag}</span>}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AdminSchedule() {
+  return (
+    <div>
+      <div className="page-head">
+        <div className="page-eyebrow">Operations</div>
+        <h1 className="page-title">Scheduling</h1>
+        <p className="page-sub">Lab draws, kickoffs, review calls, check-ins</p>
+      </div>
+      <div>
+        {[
+          {type:"Lab Draw", client:"Sarah Hayes", date:"Apr 25", time:"Morning fasted", location:"Quest Boston", status:"confirmed"},
+          {type:"Kickoff Call", client:"Jessica Park", date:"Apr 24", time:"2:00 PM PT", location:"Zoom", status:"confirmed"},
+          {type:"Q3 Review", client:"Daniel Chen", date:"Apr 25", time:"10:00 AM PT", location:"Zoom", status:"confirmed"},
+          {type:"Annual Review", client:"Anthony Rivera", date:"Apr 26", time:"3:00 PM PT", location:"Zoom", status:"confirmed"},
+          {type:"Q2 Lab Draw", client:"Marcus Reeves", date:"Jul 15", time:"Morning fasted", location:"LabCorp Portland", status:"pending"},
+          {type:"Check-in Loom", client:"Marcus Reeves", date:"Apr 29", time:"By 5 PM", location:"Loom", status:"pending"}
+        ].map((s, i) => (
+          <div key={i} className="appt-row">
+            <div className="appt-date"><div className="appt-month">{s.date.split(' ')[0]}</div><div className="appt-day">{s.date.split(' ')[1]}</div></div>
+            <div className="appt-body">
+              <div className="appt-title">{s.type} · {s.client}</div>
+              <div className="appt-sub"><span>{s.time}</span><span>{s.location}</span></div>
+            </div>
+            <span className={"badge " + (s.status==="confirmed"?"badge-green":"badge-amber")}><span className="badge-dot"></span>{s.status}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function AdminTasks() {
+  const allTasks = [];
+  CLIENTS.forEach(c => {
+    const phaseTasks = TASKS[c.currentPhase] || [];
+    phaseTasks.forEach(t => {
+      allTasks.push({...t, client:c.name, clientId:c.id, phase:c.currentPhase});
+    });
+  });
+
+  const [roleFilter, setRoleFilter] = useState("all");
+  const filtered = roleFilter === "all" ? allTasks : allTasks.filter(t => t.owner === roleFilter);
+
+  return (
+    <div>
+      <div className="page-head">
+        <div className="page-eyebrow">Operations</div>
+        <h1 className="page-title">Task Board</h1>
+        <p className="page-sub">Active tasks across all clients, filtered by role</p>
+      </div>
+
+      <div className="tab-nav" style={{marginBottom:14}}>
+        <button className={"tab-btn"+(roleFilter==="all"?" active":"")} onClick={()=>setRoleFilter("all")}>All <span className="count">{allTasks.length}</span></button>
+        {["JS", "FB", "BR", "MT", "GHL", "CL"].map(r => (
+          <button key={r} className={"tab-btn"+(roleFilter===r?" active":"")} onClick={()=>setRoleFilter(r)}>
+            {ROLE_SHORT[r]} <span className="count">{allTasks.filter(t=>t.owner===r).length}</span>
+          </button>
+        ))}
+      </div>
+
+      <div className="card">
+        {filtered.map((t, i) => (
+          <div key={i} className="task-row">
+            <div className="task-check"></div>
+            <div className="task-text">
+              {t.task}
+              <div className="task-meta">
+                <span className={"pill pill-role-"+t.owner}>{ROLE_SHORT[t.owner]}</span>
+                <span style={{fontSize:11, color:"var(--t4)"}}>{t.client}</span>
+                <span className="task-due">Day {t.dueDay}</span>
+                {t.tbd && <span className="tbd-chip">TBD</span>}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function AdminPipeline() {
+  return (
+    <div>
+      <div className="page-head">
+        <div className="page-eyebrow">Operations</div>
+        <h1 className="page-title">Pipeline Status</h1>
+        <p className="page-sub">GHL stages · every client bucketed</p>
+      </div>
+
+      <TBDBanner type="renewal-pricing"/>
+      <TBDBanner type="rhythm-step-down"/>
+
+      <CoachPipeline/>
+    </div>
+  );
+}
+
+// ============================================================================
+// MOUNT
+// ============================================================================
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App/>);
+</script>
+</body>
+</html>
